@@ -3,6 +3,8 @@ part of dialog_bot.auth.usecase;
 class UserScope extends VisitorScope {
   late final UserRepository _repository;
 
+  bool get authenticated => state is BotUser;
+
   @override
   BotUser get ready => super.ready as BotUser;
 
