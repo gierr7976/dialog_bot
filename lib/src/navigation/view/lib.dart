@@ -7,3 +7,5 @@ import 'package:dialog_bot/src/navigation/case/lib.dart';
 part 'router.dart';
 
 part 'provider.dart';
+
+part 'navigator.dart';
