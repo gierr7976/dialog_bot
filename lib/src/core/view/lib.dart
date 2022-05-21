@@ -9,8 +9,14 @@ import 'package:teledart/model.dart';
 import 'package:teledart/teledart.dart';
 import 'package:teledart/telegram.dart';
 
+export 'dart:async';
+
 part 'bot.dart';
+
 part 'common.dart';
+
 part 'listener.dart';
+
 part 'navigator.dart';
+
 part 'point.dart';
