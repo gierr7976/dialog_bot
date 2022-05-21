@@ -9,3 +9,7 @@ build/
 # IDE configuration
 .idea/
 dialog_bot.iml
+
+# env
+env.sh
+lib/src/gen/
