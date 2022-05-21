@@ -6,5 +6,8 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
+export 'package:mongo_dart/mongo_dart.dart';
+
 part 'mongo.dart';
+
 part 'repository.dart';
