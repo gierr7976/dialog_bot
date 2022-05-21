@@ -2,7 +2,7 @@ part of dialog_bot.navigation.view;
 
 typedef RouteBuilder = FlowPoint Function();
 
-class Router extends FlowPoint {
+class Router extends FlowPoint with VisitorScopeProvider {
   @override
   final String name = 'router';
 
@@ -20,8 +20,7 @@ class Router extends FlowPoint {
 
   @override
   FutureOr<void> pass() async {
-    final VisitorScope scope = VisitorScope();
-    navigator.store(scope);
+    final VisitorScope scope = await visitorScopeFrom(navigator);
 
     await scope.checkout(message.from!.id);
 

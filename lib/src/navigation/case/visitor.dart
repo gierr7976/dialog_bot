@@ -18,11 +18,13 @@ class VisitorState {
 }
 
 class VisitorScope extends Cubit<VisitorState?> {
-  late final VisitorRepository _repository = GetIt.instance();
+  late final VisitorRepository _repository;
 
   VisitorState get ready => state!;
 
   VisitorScope() : super(null);
+
+  Future<void> init() async => _repository = await GetIt.instance.getAsync();
 
   @mustCallSuper
   Future<Visitor> checkout(int id) async {

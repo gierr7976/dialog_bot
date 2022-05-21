@@ -5,3 +5,5 @@ import 'package:dialog_bot/src/gen/config.dart';
 import 'package:dialog_bot/src/navigation/case/lib.dart';
 
 part 'router.dart';
+
+part 'mixin.dart';
