@@ -6,7 +6,7 @@ class Visitor extends Entity {
 
   final String route;
 
-  Visitor({
+  const Visitor({
     required ObjectId key,
     required this.id,
     this.route = BotConfig.home_route,
