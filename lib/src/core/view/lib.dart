@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dialog_bot/src/core/debug/lib.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:teledart/model.dart';
 import 'package:teledart/teledart.dart';

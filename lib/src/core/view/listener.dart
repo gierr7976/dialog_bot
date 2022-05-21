@@ -4,7 +4,7 @@ abstract class MessageListener {
   List<Stream<TeleDartMessage>> on(TeleDart tg);
 
   Future<void> _handle(TeleDart tg, TeleDartMessage message) async {
-    final Navigator navigator = Navigator();
+    final Navigator navigator = GetIt.instance();
 
     await navigator.start(
       tg: tg,

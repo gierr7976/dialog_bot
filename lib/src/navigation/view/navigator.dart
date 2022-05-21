@@ -4,6 +4,7 @@ mixin Stored on FlowPoint {
   bool get isPreservable => true;
 }
 
+@Injectable(as: Navigator)
 class VisitorNavigator extends Navigator {
   @override
   Future<void> next(FlowPoint point) async {
