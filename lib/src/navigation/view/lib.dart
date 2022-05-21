@@ -6,4 +6,4 @@ import 'package:dialog_bot/src/navigation/case/lib.dart';
 
 part 'router.dart';
 
-part 'mixin.dart';
+part 'provider.dart';

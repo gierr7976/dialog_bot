@@ -20,7 +20,7 @@ class Router extends FlowPoint with VisitorScopeProvider {
 
   @override
   FutureOr<void> pass() async {
-    final VisitorScope scope = await visitorScopeFrom(navigator);
+    final VisitorScope scope = await getVisitorScope();
 
     await scope.checkout(message.from!.id);
 
