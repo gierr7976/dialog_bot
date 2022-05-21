@@ -6,6 +6,7 @@ pubspec.lock
 # Conventional directory for build output.
 build/
 lib/src/dependencies.config.dart
+*.g.dart
 
 # IDE configuration
 .idea/
