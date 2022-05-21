@@ -1,5 +1,6 @@
 part of dialog_bot.auth.repo;
 
+@Injectable(as: UserRepository)
 class MongoUserRepository extends MongoRepository implements UserRepository {
   static const collection = 'bot_users';
 
@@ -58,4 +59,9 @@ class MongoUserRepository extends MongoRepository implements UserRepository {
       );
     }
   }
+}
+
+@Injectable(as: VisitorRepository)
+class MongoVisitorRepository extends MongoUserRepository {
+  MongoVisitorRepository(MongoService service) : super(service);
 }
