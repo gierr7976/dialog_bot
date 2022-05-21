@@ -2,6 +2,9 @@ part of dialog_bot.core.repo;
 
 @singleton
 class MongoService {
+  static Future<void> ensureInitialized() =>
+      GetIt.instance.getAsync<MongoService>();
+
   @factoryMethod
   static Future<MongoService> create() async {
     final String uri = BotConfig.mongo_uri;
