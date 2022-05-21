@@ -6,3 +6,4 @@ import 'package:dialog_bot/src/navigation/view/lib.dart';
 
 part 'sentinel.dart';
 part 'provider.dart';
+part 'listener.dart';
