@@ -23,15 +23,3 @@ abstract class Entity {
     ObjectId? key,
   });
 }
-
-const ObjectIdConverter asObjId = ObjectIdConverter();
-
-class ObjectIdConverter extends JsonConverter<ObjectId, ObjectId> {
-  const ObjectIdConverter();
-
-  @override
-  ObjectId fromJson(ObjectId json) => json;
-
-  @override
-  ObjectId toJson(ObjectId object) => object;
-}
