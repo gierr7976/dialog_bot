@@ -8,3 +8,6 @@ environment_config:
 
     mongo_uri:
       default: mongodb://localhost/dialog_bot
+
+    home_route:
+      default: /home
