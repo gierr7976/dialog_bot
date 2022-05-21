@@ -5,3 +5,6 @@ environment_config:
   fields:
     token:
       config_field: true
+
+    mongo_uri:
+      default: mongodb://localhost/dialog_bot
