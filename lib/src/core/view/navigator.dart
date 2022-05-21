@@ -20,6 +20,10 @@ class Navigator extends Cubit<NavigatorState?> {
 
     _logStart(message, point);
 
+    await _handleTo(point);
+  }
+
+  Future<void> _handleTo(FlowPoint point) async {
     point._navigator = this;
     await point.pass();
   }
@@ -33,8 +37,7 @@ class Navigator extends Cubit<NavigatorState?> {
 
     _logTransition(ready.message, point);
 
-    point._navigator = this;
-    await point.pass();
+    await _handleTo(point);
   }
 
   void finish() async {
