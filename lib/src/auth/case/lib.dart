@@ -8,3 +8,4 @@ import 'package:dialog_bot/src/navigation/case/lib.dart';
 import 'package:get_it/get_it.dart';
 
 part 'scope.dart';
+part 'inviter.dart';
