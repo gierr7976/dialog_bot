@@ -8,8 +8,8 @@ import 'package:dialog_bot/src/core/view/lib.dart';
 import 'package:dialog_bot/src/navigation/view/lib.dart';
 
 part 'listener.dart';
+part 'menu.dart';
 part 'points/classes.dart';
 part 'points/main.dart';
 part 'points/shows.dart';
-part 'menu.dart';
 part 'points/users.dart';
