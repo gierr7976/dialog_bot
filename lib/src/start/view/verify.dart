@@ -30,29 +30,18 @@ class VerifyPoint extends FlowPoint {
 }
 
 class SignedPoint extends FlowPoint {
-  static const String _correct = 'Код верный';
-
   @override
   String get name => 'auth/verify/signed';
 
   @override
-  FutureOr<void> pass() async {
-    final Delayer delayer = Delayer(
-      delayed: [
-        () => message.reply(_correct),
-        () => navigator.next(
-              Sentinel(
-                onAuthenticated: () => WelcomePoint(
-                  next: () => AuthenticatedPoint(),
-                ),
-                onUnauthenticated: () => EndPoint(),
-              ),
-            ),
-      ],
-    );
-
-    await delayer.start();
-  }
+  FutureOr<void> pass() => navigator.next(
+        Sentinel(
+          onAuthenticated: () => WelcomePoint(
+            next: () => AuthenticatedPoint(),
+          ),
+          onUnauthenticated: () => EndPoint(),
+        ),
+      );
 }
 
 class FailedPoint extends FlowPoint {
