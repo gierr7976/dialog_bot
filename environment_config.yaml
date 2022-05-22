@@ -10,7 +10,7 @@ environment_config:
       default: mongodb://localhost/dialog_bot
 
     home_route:
-      default: /home
+      default: home
 
     signup_code_lifetime:
       default: 14
