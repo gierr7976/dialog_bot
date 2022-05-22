@@ -18,6 +18,7 @@ class HomePoint extends MenuPoint {
           ],
           [
             KeyboardButton(text: UsersPoint.kButton),
+            KeyboardButton(text: NotificationPoint.kButton),
           ]
         ],
         one_time_keyboard: true,
@@ -40,9 +41,9 @@ class HomePoint extends MenuPoint {
       '${_stats(user)}';
 
   String _membership(BotUser user) => //
-      '**В составе постановок:**\n'
+      '${Emoji.book} **В составе постановок:**\n'
       '\n'
-      '   _\\[TODO\\]_\n';
+      '${'  ' * 5}_\\[TODO\\]_\n';
 
   String _stats(BotUser user) => //
       '${Emoji.book} 0  ' // Постановок

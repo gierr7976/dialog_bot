@@ -8,6 +8,7 @@ class HomeListener extends AuthenticatedListener {
         ShowsPoint(),
         ClassesPoint(),
         UsersPoint(),
+        NotificationPoint(),
       ];
 
   @override

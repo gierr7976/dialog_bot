@@ -22,4 +22,6 @@ abstract class Emoji {
   static const String reverted = '\u{1F643}';
 
   static const String rocket = '\u{1F680}';
+
+  static const String fire = '\u{1F525}';
 }
