@@ -1,16 +1,16 @@
-library dialog_bot.start.view;
+library dialog_bot.home.view;
 
 import 'package:dialog_bot/src/auth/case/lib.dart';
+import 'package:dialog_bot/src/auth/entity/lib.dart';
 import 'package:dialog_bot/src/auth/view/lib.dart';
 import 'package:dialog_bot/src/common/view/lib.dart';
 import 'package:dialog_bot/src/core/view/lib.dart';
-import 'package:dialog_bot/src/home/view/lib.dart';
 import 'package:dialog_bot/src/navigation/view/lib.dart';
 
-part 'deeplink.dart';
+part 'listener.dart';
 
-part 'listeners.dart';
+part 'points/main.dart';
 
-part 'plain.dart';
+part 'points/shows.dart';
 
-part 'verify.dart';
+part 'points/classes.dart';

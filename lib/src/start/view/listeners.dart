@@ -1,9 +1,11 @@
 part of dialog_bot.start.view;
 
 class StartListener extends AuthenticatedListener {
+  static const String command = 'start';
+
   @override
   List<Stream<TeleDartMessage>> on(TeleDart tg) => [
-        tg.onCommand('start'),
+        tg.onCommand(command),
       ];
 
   @override
@@ -29,7 +31,11 @@ class LetsGoListener extends AuthenticatedListener {
       ];
 
   @override
-  FlowPoint onAuthenticated() => TodoPoint();
+  FlowPoint onAuthenticated() => Router(
+        routes: {
+          HomePoint.kName: () => HomePoint(),
+        },
+      );
 
   @override
   FlowPoint onUnauthenticated() => EndPoint();
