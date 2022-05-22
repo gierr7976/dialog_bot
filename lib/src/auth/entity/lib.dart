@@ -9,5 +9,5 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'lib.g.dart';
 part 'permission.dart';
-part 'signup.dart';
+part 'invite.dart';
 part 'user.dart';

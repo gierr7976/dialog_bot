@@ -8,7 +8,7 @@ class BotUser extends Visitor {
 
   final String fullName;
 
-  final SignupCode? signupCode;
+  final Invite? invite;
 
   bool get isRegistered => id != unregisteredId;
 
@@ -16,7 +16,7 @@ class BotUser extends Visitor {
     required ObjectId key,
     int id = BotUser.unregisteredId,
     required this.fullName,
-    this.signupCode,
+    this.invite,
     this.permissions = const [],
     String route = BotConfig.home_route,
   }) : super(
@@ -37,14 +37,14 @@ class BotUser extends Visitor {
     return BotUser(
       key: ObjectId(),
       fullName: fullName,
-      signupCode: SignupCode(
+      invite: Invite(
         code: code,
         until: DateTime.now().add(BotConfig.signup_code_lifetime),
       ),
     );
   }
 
-  bool _assertState() => (signupCode is SignupCode) ^ (id != unregisteredId);
+  bool _assertState() => (invite is Invite) ^ (id != unregisteredId);
 
   bool isAllowed(Permission permission) => permissions.any(
         (granted) => granted ~/ permission,
@@ -52,7 +52,7 @@ class BotUser extends Visitor {
 
   //<editor-fold desc="Data class methods">
 
-  BotUser dropSignupCode(int id) => BotUser(
+  BotUser dropInvite(int id) => BotUser(
         key: key,
         id: id,
         fullName: fullName,
@@ -66,7 +66,7 @@ class BotUser extends Visitor {
     ObjectId? key,
     int? id,
     List<Permission>? permissions,
-    SignupCode? signupCode,
+    Invite? signupCode,
     String? route,
   }) =>
       BotUser(
@@ -74,7 +74,7 @@ class BotUser extends Visitor {
         key: key ?? this.key,
         id: id ?? this.id,
         permissions: permissions ?? this.permissions,
-        signupCode: signupCode ?? this.signupCode,
+        invite: signupCode ?? this.invite,
         route: route ?? this.route,
       );
 

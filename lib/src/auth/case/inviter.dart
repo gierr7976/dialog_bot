@@ -22,10 +22,10 @@ class Inviter {
     final BotUser? user = await _repository.fetchByCode(code);
 
     if (user is BotUser) {
-      final SignupCode? signupCode = user.signupCode;
+      final Invite? invite = user.invite;
 
-      if (signupCode is SignupCode && signupCode.isValid) {
-        final BotUser signedUp = user.dropSignupCode(id);
+      if (invite is Invite && invite.isValid) {
+        final BotUser signedUp = user.dropInvite(id);
 
         await _repository.update(signedUp);
         return true;
