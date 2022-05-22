@@ -11,6 +11,8 @@ class UserScope extends VisitorScope {
   @override
   Future<void> init() async {
     _repository = await GetIt.instance.getAsync();
+
+    return super.init();
   }
 
   @override

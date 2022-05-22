@@ -17,6 +17,7 @@ class Sentinel extends FlowPoint with UserScopeProvider {
   FutureOr<void> pass() async {
     final UserScope scope = await getUserScope();
     await scope.checkout(message.from!.id);
+    navigator.store(scope);
 
     if (scope.authenticated)
       return await navigator.next(
