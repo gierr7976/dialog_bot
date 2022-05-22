@@ -11,3 +11,8 @@ environment_config:
 
     home_route:
       default: /home
+
+    signup_code_lifetime:
+      default: 14
+      type: Duration
+      pattern: 'Duration(days: __VALUE__)'
