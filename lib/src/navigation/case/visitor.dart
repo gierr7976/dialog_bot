@@ -8,6 +8,7 @@ class VisitorScope extends Cubit<Visitor?> {
 
   VisitorScope() : super(null);
 
+  @mustCallSuper
   Future<void> init() async => _repository = await GetIt.instance.getAsync();
 
   Future<void> checkout(int id) async {

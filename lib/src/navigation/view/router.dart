@@ -32,7 +32,7 @@ class Router extends FlowPoint with VisitorScopeProvider {
         routes[storedRoute]!(),
       );
 
-    scope.next(preferred);
+    await scope.next(preferred);
 
     return navigator.next(
       routes[preferred]!(),
