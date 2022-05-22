@@ -6,5 +6,5 @@ import 'package:injectable/injectable.dart';
 void _cfgDeps(Environment environment) => $initGetIt(GetIt.instance);
 
 abstract class Dependencies {
-  void config([Environment environment = dev]) => _cfgDeps(environment);
+  static void config([Environment environment = dev]) => _cfgDeps(environment);
 }
