@@ -14,7 +14,7 @@ class TodoPoint extends FlowPoint {
   @override
   String get name => 'todo';
 
-  final RouteBuilder? next;
+  final FlowPoint? next;
 
   TodoPoint({
     this.next,
@@ -32,10 +32,7 @@ class TodoPoint extends FlowPoint {
 
     await delayer.start();
 
-    if (next is RouteBuilder)
-      return navigator.next(
-        next!(),
-      );
+    if (next is FlowPoint) return navigator.next(next!);
 
     return navigator.finish();
   }

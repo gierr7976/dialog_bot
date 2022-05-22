@@ -4,7 +4,7 @@ class Forwarder extends FlowPoint {
   @override
   String get name => 'forward';
 
-  final Map<String, RouteBuilder> routes;
+  final Map<String, FlowPoint> routes;
 
   final String fallback;
 
@@ -20,10 +20,8 @@ class Forwarder extends FlowPoint {
   FutureOr<void> pass() {
     final String to = message.text!;
 
-    final RouteBuilder builder = routes[to] ?? routes[fallback]!;
+    final FlowPoint next = routes[to] ?? routes[fallback]!;
 
-    return navigator.next(
-      builder(),
-    );
+    return navigator.next(next);
   }
 }

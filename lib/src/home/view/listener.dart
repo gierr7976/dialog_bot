@@ -11,14 +11,14 @@ class HomeListener extends AuthenticatedListener {
       ];
 
   @override
-  FlowPoint onAuthenticated() => Forwarder(
+  FlowPoint get onAuthenticated => Forwarder(
         routes: {
-          HomePoint.kName: () => HomePoint(),
-          ShowsPoint.kButton: () => ShowsPoint(),
-          ClassesPoint.kButton: () => ClassesPoint(),
+          HomePoint.kName: HomePoint(),
+          ShowsPoint.kButton: ShowsPoint(),
+          ClassesPoint.kButton: ClassesPoint(),
         },
       );
 
   @override
-  FlowPoint onUnauthenticated() => EndPoint();
+  FlowPoint get onUnauthenticated => EndPoint();
 }

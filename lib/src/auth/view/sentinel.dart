@@ -4,9 +4,9 @@ class Sentinel extends FlowPoint with UserScopeProvider {
   @override
   String get name => 'sentinel';
 
-  final RouteBuilder onAuthenticated;
+  final FlowPoint onAuthenticated;
 
-  final RouteBuilder onUnauthenticated;
+  final FlowPoint onUnauthenticated;
 
   Sentinel({
     required this.onAuthenticated,
@@ -19,13 +19,8 @@ class Sentinel extends FlowPoint with UserScopeProvider {
     await scope.checkout(message.from!.id);
     navigator.store(scope);
 
-    if (scope.authenticated)
-      return await navigator.next(
-        onAuthenticated(),
-      );
+    if (scope.authenticated) return await navigator.next(onAuthenticated);
 
-    await navigator.next(
-      onUnauthenticated(),
-    );
+    await navigator.next(onUnauthenticated);
   }
 }

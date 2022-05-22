@@ -1,7 +1,7 @@
 part of dialog_bot.start.view;
 
 class WelcomePoint extends FlowPoint {
-  final RouteBuilder next;
+  final FlowPoint next;
 
   WelcomePoint({
     required this.next,
@@ -22,9 +22,7 @@ class WelcomePoint extends FlowPoint {
       ),
     );
 
-    await navigator.next(
-      next(),
-    );
+    await navigator.next(next);
   }
 }
 

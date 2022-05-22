@@ -1,8 +1,8 @@
 part of dialog_bot.start.view;
 
 class DeeplinkPoint extends FlowPoint {
-  final RouteBuilder plain;
-  final Map<String, RouteBuilder> map;
+  final FlowPoint plain;
+  final Map<String, FlowPoint> map;
 
   @override
   String get name => 'deeplink';
@@ -27,16 +27,12 @@ class DeeplinkPoint extends FlowPoint {
         DeeplinkScope(group: group, data: data),
       );
 
-      final RouteBuilder builder = map[group] ?? plain;
+      final FlowPoint next = map[group] ?? plain;
 
-      return navigator.next(
-        builder(),
-      );
+      return navigator.next(next);
     }
 
-    return navigator.next(
-      plain(),
-    );
+    return navigator.next(plain);
   }
 }
 

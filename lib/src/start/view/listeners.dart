@@ -9,16 +9,16 @@ class StartListener extends AuthenticatedListener {
       ];
 
   @override
-  FlowPoint onAuthenticated() => WelcomePoint(
-        next: () => AuthenticatedPoint(),
+  FlowPoint get onAuthenticated => WelcomePoint(
+        next: AuthenticatedPoint(),
       );
 
   @override
-  FlowPoint onUnauthenticated() => DeeplinkPoint(
+  FlowPoint get onUnauthenticated => DeeplinkPoint(
         map: {
-          VerifyPoint.kName: () => VerifyPoint(),
+          VerifyPoint.kName: VerifyPoint(),
         },
-        plain: () => UnauthenticatedPoint(),
+        plain: UnauthenticatedPoint(),
       );
 }
 
@@ -31,12 +31,12 @@ class LetsGoListener extends AuthenticatedListener {
       ];
 
   @override
-  FlowPoint onAuthenticated() => Router(
+  FlowPoint get onAuthenticated => Router(
         routes: {
-          HomePoint.kName: () => HomePoint(),
+          HomePoint.kName: HomePoint(),
         },
       );
 
   @override
-  FlowPoint onUnauthenticated() => EndPoint();
+  FlowPoint get onUnauthenticated => EndPoint();
 }

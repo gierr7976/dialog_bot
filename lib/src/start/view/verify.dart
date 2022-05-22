@@ -36,10 +36,10 @@ class SignedPoint extends FlowPoint {
   @override
   FutureOr<void> pass() => navigator.next(
         Sentinel(
-          onAuthenticated: () => WelcomePoint(
-            next: () => AuthenticatedPoint(),
+          onAuthenticated: WelcomePoint(
+            next: AuthenticatedPoint(),
           ),
-          onUnauthenticated: () => EndPoint(),
+          onUnauthenticated: EndPoint(),
         ),
       );
 }

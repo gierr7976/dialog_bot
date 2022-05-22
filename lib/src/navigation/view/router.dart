@@ -1,14 +1,12 @@
 part of dialog_bot.navigation.view;
 
-typedef RouteBuilder = FlowPoint Function();
-
 class Router extends FlowPoint with VisitorScopeProvider {
   @override
   final String name = 'router';
 
   final String preferred;
 
-  final Map<String, RouteBuilder> routes;
+  final Map<String, FlowPoint> routes;
 
   Router({
     this.preferred = BotConfig.home_route,
@@ -29,13 +27,13 @@ class Router extends FlowPoint with VisitorScopeProvider {
 
     if (routeExists)
       return navigator.next(
-        routes[storedRoute]!(),
+        routes[storedRoute]!,
       );
 
     await scope.next(preferred);
 
     return navigator.next(
-      routes[preferred]!(),
+      routes[preferred]!,
     );
   }
 }

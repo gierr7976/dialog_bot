@@ -10,7 +10,7 @@ class ShowsPoint extends FlowPoint {
   @override
   FutureOr<void> pass() => navigator.next(
         TodoPoint(
-          next: () => HomePoint(),
+          next: HomePoint(),
         ),
       );
 }

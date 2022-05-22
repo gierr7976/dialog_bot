@@ -1,9 +1,9 @@
 part of dialog_bot.auth.view;
 
 abstract class AuthenticatedListener extends MessageListener {
-  FlowPoint onAuthenticated();
+  FlowPoint get onAuthenticated;
 
-  FlowPoint onUnauthenticated();
+  FlowPoint get onUnauthenticated;
 
   @override
   FlowPoint get from => Sentinel(
