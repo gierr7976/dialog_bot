@@ -4,7 +4,7 @@ part of dialog_bot.auth.entity;
 class BotUser extends Visitor {
   static const int unregisteredId = -42;
 
-  final int? chatId;
+  final List<Permission> permissions;
 
   final String fullName;
 
@@ -16,8 +16,8 @@ class BotUser extends Visitor {
     required ObjectId key,
     int id = BotUser.unregisteredId,
     required this.fullName,
-    this.chatId,
     this.signupCode,
+    this.permissions = const [],
     String route = BotConfig.home_route,
   }) : super(
           key: key,
@@ -30,24 +30,51 @@ class BotUser extends Visitor {
     );
   }
 
-  bool _assertState() =>
-      (signupCode is SignupCode) ^ (id == unregisteredId || chatId is int);
+  factory BotUser.create(String fullName) {
+    final int hash = fullName.hashCode ^ Random.secure().nextInt(100000);
+    final String code = hash.toRadixString(16).substring(0, 8);
+
+    return BotUser(
+      key: ObjectId(),
+      fullName: fullName,
+      signupCode: SignupCode(
+        code: code,
+        until: DateTime.now().add(BotConfig.signup_code_lifetime),
+      ),
+    );
+  }
+
+  bool _assertState() => (signupCode is SignupCode) ^ (id != unregisteredId);
+
+  bool isAllowed(Permission permission) => permissions.any(
+        (granted) => granted ~/ permission,
+      );
 
   //<editor-fold desc="Data class methods">
 
+  BotUser dropSignupCode(int id) => BotUser(
+        key: key,
+        id: id,
+        fullName: fullName,
+        route: route,
+        permissions: permissions,
+      );
+
   @override
   BotUser copyWith({
-    int? chatId,
     String? fullName,
     ObjectId? key,
     int? id,
+    List<Permission>? permissions,
+    SignupCode? signupCode,
     String? route,
   }) =>
       BotUser(
-        chatId: chatId ?? this.chatId,
         fullName: fullName ?? this.fullName,
         key: key ?? this.key,
         id: id ?? this.id,
+        permissions: permissions ?? this.permissions,
+        signupCode: signupCode ?? this.signupCode,
         route: route ?? this.route,
       );
 
