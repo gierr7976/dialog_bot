@@ -16,6 +16,8 @@ part 'bot.dart';
 
 part 'common.dart';
 
+part 'delayer.dart';
+
 part 'listener.dart';
 
 part 'navigator.dart';
