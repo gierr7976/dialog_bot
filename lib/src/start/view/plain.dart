@@ -80,13 +80,21 @@ class UnauthenticatedPoint extends FlowPoint {
 
   @override
   FutureOr<void> pass() async {
-    await message.reply(_reply);
+    await message.reply(Emoji.stop);
+
+    await message.reply(
+      _reply,
+      reply_markup: ReplyKeyboardRemove(
+        remove_keyboard: true,
+        selective: false,
+      ),
+    );
 
     navigator.finish();
   }
 
   String get _reply => //
-      '${Emoji.stop} Стоп!\n'
+      'Стоп!\n'
       '\n'
       'Прежде чем пользоваться ботом, тебе нужно зарегистрироваться.\n'
       '\n'
