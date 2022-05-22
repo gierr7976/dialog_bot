@@ -23,7 +23,7 @@ class StartListener extends AuthenticatedListener {
 }
 
 class LetsGoListener extends AuthenticatedListener {
-  static const String message = 'Поехали \u{1F680}';
+  static const String message = 'Поехали ${Emoji.rocket}';
 
   @override
   List<Stream<TeleDartMessage>> on(TeleDart tg) => [

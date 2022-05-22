@@ -7,6 +7,7 @@ class HomeListener extends AuthenticatedListener {
         HomePoint(),
         ShowsPoint(),
         ClassesPoint(),
+        UsersPoint(),
       ];
 
   @override
@@ -14,7 +15,7 @@ class HomeListener extends AuthenticatedListener {
         for (MenuPoint point in points)
           point is HomePoint
               ? tg.onCommand(point.name)
-              : tg.onMessage(keyword: point.button)
+              : tg.onMessage(keyword: point.button),
       ];
 
   @override

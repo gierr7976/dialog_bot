@@ -5,3 +5,4 @@ import 'package:dialog_bot/src/gen/config.dart';
 
 part 'forwarder.dart';
 part 'points.dart';
+part 'emoji.dart';

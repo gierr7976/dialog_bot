@@ -34,7 +34,7 @@ class AuthenticatedPoint extends FlowPoint with Stored {
   FutureOr<void> pass() async {
     final Delayer delayer = Delayer(
       delayed: [
-        () => message.reply(_emoji),
+        () => message.reply(Emoji.victory),
         () => message.reply(
               _goodToSee,
               parse_mode: 'MarkdownV2',
@@ -49,8 +49,6 @@ class AuthenticatedPoint extends FlowPoint with Stored {
     await delayer.start();
   }
 
-  static const String _emoji = '\u270C';
-
   static const String _goodToSee = //
       'Рад тебя видеть\\!\n'
       '\n'
@@ -59,7 +57,7 @@ class AuthenticatedPoint extends FlowPoint with Stored {
       'помогу найти нужный реквизит и\\.\\.\\.\n'
       '\n'
       'В общем, не дам пропасть '
-      'твоему актёрскому таланту \u{1F609}';
+      'твоему актёрскому таланту ${Emoji.winky}';
 
   static const String _letsStart = 'Ну что, начнём?';
 
@@ -88,7 +86,7 @@ class UnauthenticatedPoint extends FlowPoint {
   }
 
   String get _reply => //
-      '\u26D4 Стоп!\n'
+      '${Emoji.stop} Стоп!\n'
       '\n'
       'Прежде чем пользоваться ботом, тебе нужно зарегистрироваться.\n'
       '\n'

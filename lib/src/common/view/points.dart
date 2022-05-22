@@ -24,7 +24,7 @@ class TodoPoint extends FlowPoint {
   FutureOr<void> pass() async {
     final Delayer delayer = Delayer(
       delayed: [
-        () => message.reply(_emoji),
+        () => message.reply(Emoji.reverted),
         () => message.reply(_reply),
       ],
       delay: Duration(seconds: 1),
@@ -36,8 +36,6 @@ class TodoPoint extends FlowPoint {
 
     return navigator.finish();
   }
-
-  static const String _emoji = '\u{1F643}';
 
   static const String _reply = //
       'Ой!\n'

@@ -16,6 +16,9 @@ class HomePoint extends MenuPoint {
             KeyboardButton(text: ShowsPoint.kButton),
             KeyboardButton(text: ClassesPoint.kButton),
           ],
+          [
+            KeyboardButton(text: UsersPoint.kButton),
+          ]
         ],
         one_time_keyboard: true,
         resize_keyboard: true,
@@ -31,8 +34,19 @@ class HomePoint extends MenuPoint {
   String _account(BotUser user) => //
       '**${user.fullName}**\n'
       '\n'
-      '\u{1F4D6} 0  ' // Постановок
-      '\u{1F3AD} 0  ' // Спектаклей
-      '\u{1F60E} 0  ' // Был на репах
-      '\u{1F4A9} 0\n'; // Проебал реп
+      '${_membership(user)}'
+      '\n'
+      '\n'
+      '${_stats(user)}';
+
+  String _membership(BotUser user) => //
+      '**В составе постановок:**\n'
+      '\n'
+      '   _\\[TODO\\]_\n';
+
+  String _stats(BotUser user) => //
+      '${Emoji.book} 0  ' // Постановок
+      '${Emoji.masks} 0  ' // Спектаклей
+      '${Emoji.sunglasses} 0  ' // Был на репах
+      '${Emoji.poo} 0\n'; // Проебал реп
 }
