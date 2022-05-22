@@ -5,6 +5,10 @@ abstract class UserRepository implements VisitorRepository {
 
   Future<BotUser?> fetchUser(int id);
 
+  Future<BotUser?> fetchByCode(String code);
+
   @override
   Future<void> create(covariant BotUser user);
+
+  Future<void> update(BotUser user);
 }

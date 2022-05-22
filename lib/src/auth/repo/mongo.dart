@@ -59,6 +59,25 @@ class MongoUserRepository extends MongoRepository implements UserRepository {
       );
     }
   }
+
+  @override
+  Future<BotUser?> fetchByCode(String code) async {
+    final Map<String, dynamic>? json = await db.collection(collection).findOne(
+          where.eq('signup_code.code', code),
+        );
+
+    if (json is Map<String, dynamic>) return BotUser.fromJson(json);
+
+    return null;
+  }
+
+  @override
+  Future<void> update(BotUser user) async {
+    await db.collection(collection).replaceOne(
+      {'_id': user.key},
+      user.toJson(),
+    );
+  }
 }
 
 @Injectable(as: VisitorRepository)
