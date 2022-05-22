@@ -12,5 +12,5 @@ part 'menu.dart';
 part 'points/classes.dart';
 part 'points/main.dart';
 part 'points/shows.dart';
-part 'points/users.dart';
+part 'points/collective.dart';
 part 'points/notification.dart';

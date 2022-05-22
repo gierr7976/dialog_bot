@@ -17,7 +17,7 @@ class HomePoint extends MenuPoint {
             KeyboardButton(text: ClassesPoint.kButton),
           ],
           [
-            KeyboardButton(text: UsersPoint.kButton),
+            KeyboardButton(text: CollectivePoint.kButton),
             KeyboardButton(text: NotificationPoint.kButton),
           ]
         ],

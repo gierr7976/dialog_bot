@@ -1,7 +1,7 @@
 part of dialog_bot.home.view;
 
-class UsersPoint extends MenuPoint {
-  static const String kName = 'home/users';
+class CollectivePoint extends MenuPoint {
+  static const String kName = 'home/collective';
   static const String kButton = '${Emoji.kasper} Команда';
 
   @override
