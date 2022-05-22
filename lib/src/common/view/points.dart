@@ -11,21 +11,40 @@ class EndPoint extends FlowPoint {
 }
 
 class TodoPoint extends FlowPoint {
-  static const String _reply = //
-      'Упс!\n'
-      '\n'
-      'Этот раздел пока разрабатывается';
-
-  static const String _emoji = '\u2692';
-
   @override
   String get name => 'todo';
 
+  final RouteBuilder? next;
+
+  TodoPoint({
+    this.next,
+  });
+
   @override
   FutureOr<void> pass() async {
-    await message.reply(_emoji);
-    await message.reply(_reply);
+    final Delayer delayer = Delayer(
+      delayed: [
+        () => message.reply(_emoji),
+        () => message.reply(_reply),
+      ],
+      delay: Duration(seconds: 1),
+    );
 
-    navigator.finish();
+    await delayer.start();
+
+    if (next is RouteBuilder)
+      return navigator.next(
+        next!(),
+      );
+
+    return navigator.finish();
   }
+
+  static const String _emoji = '\u{1F643}';
+
+  static const String _reply = //
+      'Ой!\n'
+      '\n'
+      'Я только учусь выполнять эту команду, '
+      'давай попробуем позже?';
 }
