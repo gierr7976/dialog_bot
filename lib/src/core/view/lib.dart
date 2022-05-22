@@ -12,6 +12,9 @@ import 'package:teledart/telegram.dart';
 
 export 'dart:async';
 
+export 'package:teledart/model.dart';
+export 'package:teledart/teledart.dart';
+
 part 'bot.dart';
 
 part 'common.dart';
