@@ -1,6 +1,6 @@
 part of dialog_bot.home.view;
 
-class ClassesPoint extends FlowPoint {
+class ClassesPoint extends MenuPoint {
   static const String kName = 'home/classes';
   static const String kButton = '\u{1F4CD} Репетиции';
 
@@ -8,9 +8,18 @@ class ClassesPoint extends FlowPoint {
   String get name => kName;
 
   @override
-  FutureOr<void> pass() => navigator.next(
+  String get button => kButton;
+
+  @override
+  FutureOr<void> forUser(BotUser user) => navigator.next(
         TodoPoint(
           next: HomePoint(),
         ),
       );
+
+  @override
+  ReplyMarkup keyboard(BotUser user) {
+    // TODO: implement keyboard
+    throw UnimplementedError();
+  }
 }
