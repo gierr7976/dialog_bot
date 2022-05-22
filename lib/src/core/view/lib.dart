@@ -16,13 +16,8 @@ export 'package:teledart/model.dart';
 export 'package:teledart/teledart.dart';
 
 part 'bot.dart';
-
 part 'common.dart';
-
 part 'delayer.dart';
-
 part 'listener.dart';
-
 part 'navigator.dart';
-
 part 'point.dart';

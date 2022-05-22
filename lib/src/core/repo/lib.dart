@@ -9,5 +9,4 @@ import 'package:mongo_dart/mongo_dart.dart';
 export 'package:mongo_dart/mongo_dart.dart';
 
 part 'mongo.dart';
-
 part 'repository.dart';

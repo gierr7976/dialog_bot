@@ -5,8 +5,6 @@ import 'package:dialog_bot/src/gen/config.dart';
 import 'package:dialog_bot/src/navigation/case/lib.dart';
 import 'package:injectable/injectable.dart';
 
-part 'router.dart';
-
-part 'provider.dart';
-
 part 'navigator.dart';
+part 'provider.dart';
+part 'router.dart';
