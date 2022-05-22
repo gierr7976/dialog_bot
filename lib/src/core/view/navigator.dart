@@ -92,8 +92,10 @@ class NavigatorState {
 }
 
 extension _LoggedNavigator on Navigator {
-  String _user(TeleDartMessage message) =>
-      '[ ${message.from?.id} | @${message.from?.username}]';
+  String _user(TeleDartMessage message) => //
+      '[ id: ${message.from?.id} '
+      '| chat: ${message.chat.id} '
+      '| @${message.from?.username} ]';
 
   void _logStart(TeleDartMessage message, FlowPoint point) {
     final String user = _user(message);
