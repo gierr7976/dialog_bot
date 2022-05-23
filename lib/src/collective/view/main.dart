@@ -26,10 +26,15 @@ class CollectivePoint extends MenuPoint {
   }
 
   @override
-  ReplyMarkup keyboard(BotUser user) {
-    // TODO: implement keyboard
-    throw UnimplementedError();
-  }
+  ReplyMarkup keyboard(BotUser user) => ReplyKeyboardMarkup(
+        keyboard: [
+          [
+            BackPoint.buildButton(),
+          ],
+        ],
+        resize_keyboard: true,
+        one_time_keyboard: true,
+      );
 
   String _reply(List<BotUser> users) => //
       '**Коллектив "Нового Диалога":**\n'
