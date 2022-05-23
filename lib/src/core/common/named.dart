@@ -1,4 +1,4 @@
-part of dialog_bot.core.view;
+part of dialog_bot.core.common;
 
 abstract class Named {
   String get name;
