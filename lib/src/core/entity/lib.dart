@@ -8,3 +8,7 @@ export 'package:mongo_dart/mongo_dart.dart';
 
 part 'converters.dart';
 part 'entity.dart';
+
+part 'visitor.dart';
+
+part 'lib.g.dart';
