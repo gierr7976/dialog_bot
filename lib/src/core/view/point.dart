@@ -9,14 +9,7 @@ abstract class FlowPoint {
 
   const FlowPoint();
 
-  FutureOr<FlowPoint?> handle(FlowNavigator navigator);
-}
+  List<FlowPoint>? build() => null;
 
-abstract class RootPoint extends FlowPoint {
-  final FlowPoint from;
-
-  const RootPoint(this.from);
-
-  @override
-  FutureOr<FlowPoint?> handle(FlowNavigator navigator) => from;
+  FutureOr<String?> handle(FlowNavigator navigator) => null;
 }
