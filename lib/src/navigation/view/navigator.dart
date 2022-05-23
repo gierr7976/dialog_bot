@@ -16,7 +16,7 @@ class VisitorNavigator extends Navigator {
   Future<void> updateRoute(FlowPoint point) async {
     final VisitorScope? scope = state?.prefer();
 
-    if (scope is VisitorScope && FlowPoint is Stored)
+    if (scope is VisitorScope && point is Stored && point.isPreservable)
       await scope.next(point.name);
   }
 }

@@ -74,7 +74,7 @@ class BotUser extends Visitor {
         key: key ?? this.key,
         id: id ?? this.id,
         permissions: permissions ?? this.permissions,
-        invite: signupCode ?? this.invite,
+        invite: signupCode ?? invite,
         route: route ?? this.route,
       );
 
