@@ -19,3 +19,5 @@ part 'points/main.dart';
 part 'points/notification.dart';
 
 part 'points/shows.dart';
+
+part 'back.dart';

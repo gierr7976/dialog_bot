@@ -8,7 +8,7 @@ class ClassesPoint extends MenuPoint {
   String get name => kName;
 
   @override
-  String get button => kButton;
+  KeyboardButton get button => KeyboardButton(text: kButton);
 
   @override
   FutureOr<void> forUser(BotUser user) => navigator.next(

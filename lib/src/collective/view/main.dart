@@ -8,7 +8,7 @@ class CollectivePoint extends MenuPoint {
   String get name => kName;
 
   @override
-  String get button => kButton;
+  KeyboardButton get button => KeyboardButton(text: kButton);
 
   @override
   FutureOr<void> forUser(BotUser user) async {
@@ -20,21 +20,20 @@ class CollectivePoint extends MenuPoint {
     await message.reply(
       _reply(users),
       parse_mode: 'MarkdownV2',
+      reply_markup: keyboard(user),
     );
 
     navigator.finish();
   }
 
   @override
-  ReplyMarkup keyboard(BotUser user) => ReplyKeyboardMarkup(
-        keyboard: [
-          [
-            BackPoint.buildButton(),
-          ],
+  ReplyMarkup keyboard(BotUser user) => MenuKeyboard(
+        targets: [
+          BackPoint(
+            preferred: HomePoint(),
+          ),
         ],
-        resize_keyboard: true,
-        one_time_keyboard: true,
-      );
+      ).markup;
 
   String _reply(List<BotUser> users) => //
       '**Коллектив "Нового Диалога":**\n'

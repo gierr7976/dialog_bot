@@ -7,23 +7,17 @@ class HomePoint extends MenuPoint {
   String get name => kName;
 
   @override
-  String get button => throw UnsupportedError('Root menu');
+  KeyboardButton get button => throw UnsupportedError('Root menu');
 
   @override
-  ReplyKeyboardMarkup keyboard(BotUser user) => ReplyKeyboardMarkup(
-        keyboard: [
-          [
-            KeyboardButton(text: ShowsPoint.kButton),
-            KeyboardButton(text: ClassesPoint.kButton),
-          ],
-          [
-            KeyboardButton(text: CollectivePoint.kButton),
-            KeyboardButton(text: NotificationPoint.kButton),
-          ]
+  ReplyMarkup keyboard(BotUser user) => MenuKeyboard(
+        targets: [
+          ShowsPoint(),
+          ClassesPoint(),
+          CollectivePoint(),
+          NotificationPoint(),
         ],
-        one_time_keyboard: true,
-        resize_keyboard: true,
-      );
+      ).markup;
 
   @override
   FutureOr<void> forUser(BotUser user) => message.reply(

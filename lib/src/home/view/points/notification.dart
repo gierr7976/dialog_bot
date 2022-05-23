@@ -8,7 +8,7 @@ class NotificationPoint extends MenuPoint {
   String get name => kName;
 
   @override
-  String get button => kButton;
+  KeyboardButton get button => KeyboardButton(text: kButton);
 
   FlowPoint get fallback => HomePoint();
 

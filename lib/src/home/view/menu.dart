@@ -1,7 +1,7 @@
 part of dialog_bot.home.view;
 
 abstract class MenuPoint extends FlowPoint with Stored {
-  String get button;
+  KeyboardButton get button;
 
   @override
   FutureOr<void> pass() async {
@@ -18,36 +18,38 @@ abstract class MenuPoint extends FlowPoint with Stored {
   ReplyMarkup keyboard(BotUser user);
 }
 
-class BackPoint extends MenuPoint {
-  static KeyboardButton buildButton() => KeyboardButton(text: kButton);
+class MenuKeyboard {
+  final List<MenuPoint> targets;
 
-  static const String kName = 'back';
-
-  static const String kButton = 'Назад';
-
-  @override
-  String get button => kButton;
-
-  @override
-  String get name => kName;
-
-  final FlowPoint preferred;
-
-  final Map<String, FlowPoint> routes;
-
-  BackPoint({
-    required this.preferred,
-    this.routes = const {},
+  const MenuKeyboard({
+    required this.targets,
   });
 
-  @override
-  FutureOr<void> forUser(BotUser user) {
-    final String route = user.route;
+  ReplyMarkup get markup => targets.isNotEmpty
+      ? _buildMarkup()
+      : ReplyKeyboardRemove(
+          remove_keyboard: true,
+          selective: false,
+        );
 
-    return navigator.next(routes[route] ?? preferred);
+  ReplyKeyboardMarkup _buildMarkup() {
+    final List<List<KeyboardButton>> keyboard = [];
+
+    for (int i = 0; i < targets.length; i++) {
+      final MenuPoint point = targets[i];
+
+      if (i % 2 == 0)
+        keyboard.add(
+          [point.button],
+        );
+      else
+        keyboard.last.add(point.button);
+    }
+
+    return ReplyKeyboardMarkup(
+      keyboard: keyboard,
+      one_time_keyboard: true,
+      resize_keyboard: true,
+    );
   }
-
-  @override
-  ReplyMarkup keyboard(BotUser user) =>
-      throw UnsupportedError('BackPoint should not have keyboard');
 }
