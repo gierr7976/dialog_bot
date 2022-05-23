@@ -24,4 +24,6 @@ abstract class Emoji {
   static const String rocket = '\u{1F680}';
 
   static const String fire = '\u{1F525}';
+
+  static const String hello = '\u{1F44B}';
 }

@@ -29,6 +29,7 @@ class CollectivePoint extends MenuPoint {
   @override
   ReplyMarkup keyboard(BotUser user) => MenuKeyboard(
         targets: [
+          InvitePoint(),
           BackPoint(
             preferred: HomePoint(),
           ),

@@ -9,3 +9,4 @@ import 'package:dialog_bot/src/home/view/lib.dart';
 import 'package:teledart/model.dart';
 
 part 'main.dart';
+part 'invite.dart';

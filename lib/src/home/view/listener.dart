@@ -7,7 +7,11 @@ class HomeListener extends AuthenticatedListener {
         HomePoint(),
         ShowsPoint(),
         ClassesPoint(),
+
+        // collective
         CollectivePoint(),
+        InvitePoint(),
+
         NotificationPoint(),
         BackPoint(
           preferred: HomePoint(),
