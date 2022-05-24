@@ -9,13 +9,22 @@ import 'package:test/test.dart';
 
 import 'navigator_test.mocks.dart';
 
-@GenerateMocks(
-    [VisitorRepository, FlowPoint, TeleDartMessage, TeleDart, Input, User])
+@GenerateMocks([
+  VisitorRepository,
+  FlowPoint,
+  TeleDartMessage,
+  TeleDart,
+  Input,
+  User,
+  CommandInput
+])
 void main() => group(
       'FlowNavigator unit test',
       () {
+        initRepo();
         init();
         continueFlow();
+        command();
         removeRepo();
       },
     );
@@ -23,7 +32,6 @@ void main() => group(
 void init() => test(
       'Initialization test',
       () async {
-        _initRepository();
         final MockFlowPoint root = mockPoint(name: 'root');
 
         final FlowNavigator navigator = FlowNavigator(
@@ -45,7 +53,6 @@ void init() => test(
 void continueFlow() => test(
       'Continue flow test',
       () async {
-        _initRepository();
         final MockFlowPoint root = mockPoint(
           name: 'home',
           sub: [
@@ -98,6 +105,30 @@ void continueFlow() => test(
       },
     );
 
+void command() => test(
+      'Navigation to command test',
+      () async {
+        final MockFlowPoint root = mockPoint(name: 'root');
+        final MockFlowPoint someCommand = mockPoint(name: 'someCommand');
+        final MockTeleDartMessage message = mockMessage(text: '/someCommand');
+        final MockCommandInput trigger = mockCommand('someCommand');
+
+        final FlowNavigator navigator = FlowNavigator(
+          tg: MockTeleDart(),
+          message: message,
+          trigger: trigger,
+          roots: [
+            root,
+            someCommand,
+          ],
+        );
+
+        await navigator.start();
+
+        verify(someCommand.handle(captureAny)).called(1);
+      },
+    );
+
 MockFlowPoint mockPoint({
   required String name,
   List<FlowPoint>? sub,
@@ -123,30 +154,39 @@ MockTeleDartMessage mockMessage({String text = '', int from = 0}) {
   return mock;
 }
 
-void _initRepository() {
-  final MockVisitorRepository repository = MockVisitorRepository();
-  when(
-    repository.fetch(0),
-  ).thenAnswer(
-    (_) async => Visitor(
-      key: ObjectId(),
-      id: 0,
-      route: Uri.parse(r'/root'),
-    ),
-  );
-  when(
-    repository.fetch(1),
-  ).thenAnswer(
-    (_) async => Visitor(
-      key: ObjectId(),
-      id: 1,
-      route: Uri.parse(r'/home/a'),
-    ),
-  );
-  GetIt.instance.registerSingletonAsync<VisitorRepository>(
-    () async => repository,
-  );
+MockCommandInput mockCommand(String name) {
+  final MockCommandInput mock = MockCommandInput();
+  when(mock.command).thenReturn(name);
+
+  return mock;
 }
+
+void initRepo() => setUp(
+      () {
+        final MockVisitorRepository repository = MockVisitorRepository();
+        when(
+          repository.fetch(0),
+        ).thenAnswer(
+          (_) async => Visitor(
+            key: ObjectId(),
+            id: 0,
+            route: Uri.parse(r'/root'),
+          ),
+        );
+        when(
+          repository.fetch(1),
+        ).thenAnswer(
+          (_) async => Visitor(
+            key: ObjectId(),
+            id: 1,
+            route: Uri.parse(r'/home/a'),
+          ),
+        );
+        GetIt.instance.registerSingletonAsync<VisitorRepository>(
+          () async => repository,
+        );
+      },
+    );
 
 void removeRepo() => tearDown(
       () => GetIt.instance.unregister<VisitorRepository>(),
