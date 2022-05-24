@@ -56,6 +56,7 @@ void continueFlow() => test(
                 mockPoint(
                   name: 'b',
                   next: '/home/c',
+                  shouldStore: true,
                 ),
               ],
             ),
@@ -84,6 +85,16 @@ void continueFlow() => test(
         );
 
         await navigator.start();
+
+        final MockVisitorRepository repository =
+            GetIt.instance<VisitorRepository>() as MockVisitorRepository;
+
+        expect(
+          verify(repository.store(captureAny)).captured.map((e) => e.route),
+          [
+            Uri.parse('/home/a/b'),
+          ],
+        );
       },
     );
 
@@ -91,11 +102,13 @@ MockFlowPoint mockPoint({
   required String name,
   List<FlowPoint>? sub,
   String? next,
+  bool shouldStore = false,
 }) {
   final MockFlowPoint mock = MockFlowPoint();
   when(mock.name).thenReturn(name);
   when(mock.build()).thenReturn(sub);
   when(mock.handle(any)).thenAnswer((_) => next);
+  when(mock.shouldStore).thenReturn(shouldStore);
 
   return mock;
 }
