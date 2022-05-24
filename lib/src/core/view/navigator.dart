@@ -46,15 +46,18 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
 
   FlowNavigatorState get ready => state!;
 
-  FlowNavigator._({
+  FlowNavigator({
     required this.tg,
     required this.message,
     required this.trigger,
     required List<FlowPoint> roots,
-  })  : _roots = roots,
+  })  : assert(roots.isNotEmpty),
+        _roots = roots,
         super(null);
 
   Future<void> init() async {
+    assert(state == null);
+
     _repository = await GetIt.instance.getAsync();
 
     final int id = message.from!.id;
@@ -76,6 +79,8 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
   }
 
   Future<void> start() async {
+    await init();
+
     FlowPoint? next = ready._current;
 
     while (true) {
@@ -110,7 +115,7 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
 
   FlowPoint _nextLocal(String next) {
     final Uri route = Uri.parse(
-      [ready.visitor.route.pathSegments, next].join('/'),
+      '/${[...ready.visitor.route.pathSegments, next].join('/')}',
     );
     final Uri routeLocal = Uri.parse('/$next');
 
