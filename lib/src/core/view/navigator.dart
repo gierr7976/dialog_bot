@@ -80,7 +80,7 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
     );
   }
 
-  Future<void> start() async {
+  Future<void> run() async {
     await init();
 
     FlowPoint next = ready._current;

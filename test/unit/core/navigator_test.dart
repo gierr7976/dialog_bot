@@ -92,7 +92,7 @@ void continueFlow() => test(
           },
         );
 
-        await navigator.start();
+        await navigator.run();
 
         final MockVisitorRepository repository =
             GetIt.instance<VisitorRepository>() as MockVisitorRepository;
@@ -124,7 +124,7 @@ void command() => test(
           ],
         );
 
-        await navigator.start();
+        await navigator.run();
 
         verify(someCommand.handle(captureAny)).called(1);
       },
