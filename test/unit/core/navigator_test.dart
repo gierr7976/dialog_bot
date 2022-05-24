@@ -1,10 +1,11 @@
-import 'package:dialog_bot/src/core/common/lib.dart';
 import 'package:dialog_bot/src/core/entity/lib.dart';
 import 'package:dialog_bot/src/core/repo/lib.dart';
 import 'package:dialog_bot/src/core/view/lib.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:teledart/model.dart';
+import 'package:teledart/teledart.dart';
 import 'package:test/test.dart';
 
 import 'navigator_test.mocks.dart';

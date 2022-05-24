@@ -22,9 +22,11 @@ abstract class Input {
 
 class CommandInput extends Input {
   final String command;
+  final String description;
 
   const CommandInput(
     this.command,
+    this.description,
   ) : super(
           key: command,
         );
