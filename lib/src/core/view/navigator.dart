@@ -67,7 +67,9 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
           route: Uri.parse(BotConfig.home_route),
         );
 
-    final FlowPoint from = _FlowExplorer(_roots).find(visitor.route)!;
+    final FlowPoint from = trigger is CommandInput
+        ? _findCommand(trigger as CommandInput)
+        : _FlowExplorer(_roots).find(visitor.route)!;
 
     emit(
       FlowNavigatorState._(
@@ -133,6 +135,9 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
 
     return nextPoint;
   }
+
+  FlowPoint _findCommand(CommandInput trigger) =>
+      _FlowExplorer(_roots)._findInline(trigger.command, _roots)!;
 
 //</editor-fold>
 }
