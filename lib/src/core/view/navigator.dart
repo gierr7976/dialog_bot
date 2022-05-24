@@ -81,10 +81,10 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
   Future<void> start() async {
     await init();
 
-    FlowPoint? next = ready._current;
+    FlowPoint next = ready._current;
 
     while (true) {
-      final String? requested = await next?.handle(this);
+      final String? requested = await next.handle(this);
 
       if (requested is String) {
         if (requested[0] == '/')
@@ -93,6 +93,8 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
           next = _nextLocal(requested);
       } else
         break;
+
+      if (next.shouldStore) await _repository.store(ready.visitor);
     }
   }
 
