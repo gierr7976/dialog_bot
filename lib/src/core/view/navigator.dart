@@ -108,8 +108,11 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
   }
 
   void updateVisitor(Visitor visitor) {
-    final bool isVisitorModified = visitor.id != state?.visitor.id;
+    final bool isVisitorModified =
+        visitor.id != state?.visitor.id && state?.visitor.id is int;
+
     final bool isRouteModified = visitor.route != state?.visitor.route;
+
     final bool shouldHandle = !isVisitorModified && !isRouteModified;
 
     if (shouldHandle)
