@@ -90,9 +90,11 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
       final String? next = await current.handle(this);
 
       if (next is String) {
-        assert(next[0] == '/');
+        final bool isGlobal = next[0] == '/';
+        final String currentRouteString = ready.visitor.route.toString();
 
-        final Uri nextRoute = Uri.parse(next);
+        final Uri nextRoute =
+            Uri.parse(isGlobal ? next : '$currentRouteString/$next');
         final FlowPoint? nextPoint = _bySegments(nextRoute.pathSegments, _root);
 
         if (nextPoint is FlowPoint) {

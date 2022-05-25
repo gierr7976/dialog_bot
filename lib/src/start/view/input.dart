@@ -18,9 +18,9 @@ class StartCommand extends SecureInputPoint {
 
   @override
   FutureOr<String?> onAuthorized(FlowNavigator navigator) async =>
-      '/start/authenticated';
+      'authenticated';
 
   @override
   FutureOr<String?> onNonAuthorized(FlowNavigator navigator) async =>
-      '/start/non-authenticated';
+      'non-authenticated';
 }
