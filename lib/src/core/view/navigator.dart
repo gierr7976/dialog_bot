@@ -24,7 +24,6 @@ class FlowNavigatorState {
   FlowNavigatorState copyWith({
     Visitor? visitor,
     FlowPoint? current,
-    String? route,
     List<dynamic>? data,
   }) =>
       FlowNavigatorState(
@@ -94,6 +93,7 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
           emit(
             ready.copyWith(
               visitor: ready.visitor.copyWith(route: nextRoute),
+              current: current,
             ),
           );
         } else
@@ -107,9 +107,28 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
     await close();
   }
 
+  //<editor-fold desc="Storage methods">
+
+  void store<T>(T element) {
+    final List<dynamic> data = ready._data.toList();
+    data.removeWhere((element) => element is T);
+    data.add(element);
+
+    emit(
+      ready.copyWith(
+        data: data,
+      ),
+    );
+  }
+
+  T? prefer<T>() => ready.prefer();
+
+  T require<T>() => ready.require();
+
+  //</editor-fold>
+
   void updateVisitor(Visitor visitor) {
-    final bool isVisitorModified =
-        visitor.id != state?.visitor.id && state?.visitor.id is int;
+    final bool isVisitorModified = visitor.id != state?.visitor.id;
 
     final bool isRouteModified = visitor.route != state?.visitor.route;
 
