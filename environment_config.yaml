@@ -12,7 +12,7 @@ environment_config:
     home_route:
       default: /start
 
-    signup_code_lifetime:
+    invite_lifetime:
       default: 14
       type: Duration
       pattern: 'Duration(days: __VALUE__)'
