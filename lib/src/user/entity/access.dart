@@ -10,6 +10,10 @@ class Position {
     required this.permissions,
   });
 
+  bool isAllowed(Permission permission) => permissions.any(
+        (allowed) => allowed >> permission,
+      );
+
   //<editor-fold desc="Data class methods">
 
   Position copyWith({
@@ -49,4 +53,8 @@ class Position {
 enum Permission {
   all,
   invite,
+}
+
+extension PermissionComparison on Permission {
+  bool operator >>(Permission other) => this == other || this == Permission.all;
 }

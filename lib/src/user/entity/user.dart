@@ -14,6 +14,10 @@ class DialogUser extends Visitor {
     required this.positions,
   });
 
+  bool isAllowed(Permission permission) => positions.any(
+        (position) => position.isAllowed(permission),
+      );
+
   //<editor-fold desc="Data class methods">
 
   @override
