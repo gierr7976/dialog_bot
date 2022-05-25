@@ -9,7 +9,14 @@ class _StartAuthenticated extends FlowPoint with Keyboard {
 
   @override
   List<FlowPoint> get children => [
-        _LetsGoButtonPoint(),
+        RedirectButton(
+          name: name,
+          text: 'Поехали ${Emoji.rocket}',
+          next: 'should-help',
+          children: [
+            _ShouldIHelp(),
+          ],
+        ),
       ];
 
   @override
@@ -28,7 +35,7 @@ class _StartAuthenticated extends FlowPoint with Keyboard {
       ],
     );
 
-    await delayer.start();
+    await delayer.run();
 
     return null;
   }
@@ -46,20 +53,30 @@ class _StartAuthenticated extends FlowPoint with Keyboard {
   static const String _letsStart = 'Ну что, начнём?';
 }
 
-class _LetsGoButtonPoint extends SecureInputPoint {
-  static const String button = 'Поехали ${Emoji.rocket}';
+class _ShouldIHelp extends FlowPoint with Keyboard {
+  @override
+  final String name = 'should-help';
 
   @override
-  String get name => 'lets-go';
+  List<FlowPoint> get children => [
+        RedirectButton(name: 'yes', text: 'Да', next: '/home/help'),
+        RedirectButton(name: 'no', text: 'Нет', next: '/home'),
+      ];
 
   @override
-  Input get trigger => PermittedButtonInput(
-        name: name,
-        text: button,
-      );
+  final bool shouldStore = true;
 
   @override
-  FutureOr<String?> onAuthorized(FlowNavigator navigator) => null;
+  FutureOr<String?> handle(FlowNavigator navigator) async {
+    await navigator.message.reply(
+      _reply,
+      reply_markup: getKeyboard(navigator.user),
+    );
+
+    return null;
+  }
+
+  static const _reply = 'Рассказать о твоём профиле?';
 }
 
 class _StartNonAuthenticated extends FlowPoint with Keyboard {

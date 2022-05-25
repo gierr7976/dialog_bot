@@ -7,7 +7,7 @@ class StartCommand extends SecureInputPoint {
   @override
   Input get trigger => CommandInput(
         command: 'start',
-        description: 'Запускает бота',
+        description: 'Запустить бота',
       );
 
   @override

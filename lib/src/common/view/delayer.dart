@@ -14,7 +14,7 @@ class Delayer {
     this.delay = Delayer.fallbackDelay,
   });
 
-  Future<void> start() async {
+  Future<void> run() async {
     for (DelayedFunction delayed in this.delayed) {
       await delayed();
       await Future.delayed(delay);
