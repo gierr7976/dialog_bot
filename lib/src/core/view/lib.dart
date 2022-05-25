@@ -13,11 +13,7 @@ import 'package:teledart/teledart.dart';
 import 'package:teledart/telegram.dart';
 
 part 'bot.dart';
-
 part 'extractor.dart';
-
 part 'input.dart';
-
 part 'navigator.dart';
-
 part 'point.dart';

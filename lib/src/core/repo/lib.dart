@@ -11,5 +11,4 @@ export 'package:mongo_dart/mongo_dart.dart';
 
 part 'mongo.dart';
 part 'repository.dart';
-
 part 'visitor.dart';
