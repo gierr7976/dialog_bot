@@ -23,6 +23,11 @@ class MongoUserRepository extends MongoVisitorRepository
   }
 
   @override
+  Future<void> deleteByCode(String code) => db.collection(collection).deleteOne(
+        where.eq('invite.code', code),
+      );
+
+  @override
   DialogUser parseRaw(Map<String, dynamic> raw) => DialogUser.fromJson(raw);
 }
 

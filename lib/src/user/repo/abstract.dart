@@ -8,4 +8,6 @@ abstract class UserRepository implements VisitorRepository {
 
   @override
   Future<void> store(covariant DialogUser user);
+
+  Future<void> deleteByCode(String code);
 }
