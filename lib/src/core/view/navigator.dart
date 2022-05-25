@@ -107,6 +107,23 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
     await close();
   }
 
+  void updateVisitor(Visitor visitor) {
+    final bool isVisitorModified = visitor.id != state?.visitor.id;
+    final bool isRouteModified = visitor.route != state?.visitor.route;
+    final bool shouldHandle = !isVisitorModified && !isRouteModified;
+
+    if (shouldHandle)
+      return emit(
+        ready.copyWith(
+          visitor: visitor,
+        ),
+      );
+
+    slLogger.w('Route and id should not be modified outside of FlowNavigator');
+  }
+
+  //<editor-fold desc="Routing">
+
   FlowPoint _byRoute(Uri route) =>
       _bySegments(route.pathSegments, _root) ??
       _bySegments(home.pathSegments, _root)!;
@@ -127,4 +144,6 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
 
   FlowPoint? _alignSegment(String segment, FlowPoint point) =>
       point.name == segment ? point : null;
+
+//</editor-fold>
 }

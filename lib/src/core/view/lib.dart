@@ -3,6 +3,7 @@ library dialog_bot.core.view;
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dialog_bot/src/core/debug/lib.dart';
 import 'package:dialog_bot/src/core/entity/lib.dart';
 import 'package:dialog_bot/src/core/repo/lib.dart';
 import 'package:dialog_bot/src/gen/config.dart';
