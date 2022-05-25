@@ -14,5 +14,23 @@ abstract class SecureInputPoint extends InputPoint {
 
   FutureOr<String?> onAuthorized(FlowNavigator navigator);
 
-  FutureOr<String?> onNonAuthorized(FlowNavigator navigator);
+  FutureOr<String?> onNonAuthorized(FlowNavigator navigator) => null;
+}
+
+class PermittedButtonInput extends ButtonInput {
+  final bool authorized;
+
+  final Permission? permission;
+
+  PermittedButtonInput({
+    required super.text,
+    this.authorized = true,
+    this.permission,
+  });
+
+  bool isEnabled(DialogUser? user) => permission is Permission
+      ? user is DialogUser
+          ? user.isAllowed(permission!)
+          : false
+      : !authorized;
 }

@@ -24,10 +24,15 @@ class CommandInput extends Input {
   final String command;
   final String description;
 
-  const CommandInput(
-    this.command,
-    this.description,
-  ) : super(
+  BotCommand get botCommand => BotCommand(
+        command: command,
+        description: description,
+      );
+
+  const CommandInput({
+    required this.command,
+    required this.description,
+  }) : super(
           key: command,
         );
 
@@ -58,7 +63,9 @@ class TextInput extends Input {
 class ButtonInput extends TextInput {
   final String text;
 
-  const ButtonInput(this.text) : super(text);
+  const ButtonInput({
+    required this.text,
+  }) : super(text);
 
   KeyboardButton toMarkup() => KeyboardButton(
         text: text,

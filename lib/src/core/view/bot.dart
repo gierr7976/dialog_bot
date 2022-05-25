@@ -13,7 +13,23 @@ class FlowBot {
           home: home,
         );
 
-  List<BotCommand> get publicCommands => throw UnimplementedError();
+  List<BotCommand> get publicCommands {
+    final List<FlowPoint> roots = _root.build();
+    final List<InputPoint> commandInputs = roots
+        .where(
+          (point) => point is InputPoint && point.trigger is CommandInput,
+        )
+        .map((point) => point as InputPoint)
+        .toList();
+
+    if (commandInputs.isNotEmpty)
+      return [
+        for (InputPoint point in commandInputs)
+          (point.trigger as CommandInput).botCommand,
+      ];
+
+    return [];
+  }
 
   Future<void> start() async {
     final User user = await Telegram(token).getMe();

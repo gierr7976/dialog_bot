@@ -10,7 +10,7 @@ class Position {
     required this.permissions,
   });
 
-  bool isAllowed(Permission permission) => permissions.any(
+  bool isAllowed(Permission? permission) => permissions.any(
         (allowed) => allowed >> permission,
       );
 
@@ -56,5 +56,6 @@ enum Permission {
 }
 
 extension PermissionComparison on Permission {
-  bool operator >>(Permission other) => this == other || this == Permission.all;
+  bool operator >>(Permission? other) =>
+      this == other || this == Permission.all || other == null;
 }

@@ -9,7 +9,8 @@ class MongoUserRepository extends MongoVisitorRepository
   MongoUserRepository(super.service);
 
   @override
-  Future<DialogUser?> fetch(int id) => super.fetch(id) as Future<DialogUser?>;
+  Future<DialogUser?> fetch(int id) async =>
+      (await super.fetch(id)) as DialogUser?;
 
   @override
   Future<DialogUser?> fetchByCode(String code) async {
