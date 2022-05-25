@@ -45,7 +45,7 @@ class CommandInput extends Input {
 class TextInput extends Input {
   final Pattern pattern;
 
-  TextInput(this.pattern) : super(key: pattern);
+  const TextInput(this.pattern) : super(key: pattern);
 
   @override
   Stream<TeleDartMessage> build(TeleDart tg) => tg.onMessage(keyword: pattern);
@@ -58,7 +58,7 @@ class TextInput extends Input {
 class ButtonInput extends TextInput {
   final String text;
 
-  ButtonInput(this.text) : super(text);
+  const ButtonInput(this.text) : super(text);
 
   KeyboardButton toMarkup() => KeyboardButton(
         text: text,
