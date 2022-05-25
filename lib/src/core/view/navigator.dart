@@ -64,13 +64,16 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
         _repository.fetch(message.from!.id) ??
         Visitor.create(id: message.from!.id);
 
-    final FlowPoint first = _byRoute(
-      scope.match(visitor.route) ?? scope.global ?? visitor.route,
-    );
+    final Uri from =
+        scope.match(visitor.route) ?? scope.global ?? visitor.route;
+
+    final FlowPoint first = _byRoute(from);
 
     emit(
       FlowNavigatorState(
-        visitor: visitor,
+        visitor: visitor.copyWith(
+          route: from,
+        ),
         current: first,
       ),
     );
@@ -78,6 +81,8 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
 
   Future<void> run() async {
     await _init();
+
+    _logStart(ready.visitor.route);
 
     FlowPoint current = ready._current;
 
@@ -96,6 +101,8 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
               current: current,
             ),
           );
+
+          _logTransition(nextRoute);
         } else
           throw ArgumentError('Route not exists');
       } else
@@ -103,6 +110,8 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
 
       if (current.shouldStore) await _repository.store(ready.visitor);
     }
+
+    _logEnd(ready.visitor.route);
 
     await close();
   }
@@ -166,6 +175,22 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
 
   FlowPoint? _alignSegment(String segment, FlowPoint point) =>
       point.name == segment ? point : null;
+
+//</editor-fold>
+
+  //<editor-fold desc="Logging">
+
+  void _logStart(Uri route) => slLogger.v(
+        '${message.from?.debugName} started on ${route.toString()}',
+      );
+
+  void _logTransition(Uri route) => slLogger.v(
+        '${message.from?.debugName} forwarded to ${route.toString()}',
+      );
+
+  void _logEnd(Uri route) => slLogger.v(
+        '${message.from?.debugName} finished on ${route.toString()}',
+      );
 
 //</editor-fold>
 }

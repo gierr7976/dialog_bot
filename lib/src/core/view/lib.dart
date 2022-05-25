@@ -18,3 +18,4 @@ part 'extractor.dart';
 part 'input.dart';
 part 'navigator.dart';
 part 'point.dart';
+part 'logging.dart';
