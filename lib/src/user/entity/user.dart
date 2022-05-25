@@ -10,12 +10,21 @@ class DialogUser extends Visitor {
 
   const DialogUser({
     required super.key,
-    required super.id,
+    super.id,
     required super.route,
     required this.fullName,
     this.positions = const [],
     this.invite,
   });
+
+  DialogUser.create({
+    required this.fullName,
+    required this.invite,
+    this.positions = const [],
+  }) : super(
+          key: ObjectId(clientMode: true),
+          route: Uri.parse(BotConfig.home_route),
+        );
 
   bool isAllowed(Permission permission) => positions.any(
         (position) => position.isAllowed(permission),

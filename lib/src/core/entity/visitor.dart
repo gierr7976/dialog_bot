@@ -12,7 +12,7 @@ class Visitor extends Entity {
   });
 
   factory Visitor.create({required int id}) => Visitor(
-        key: ObjectId(),
+        key: ObjectId(clientMode: true),
         id: id,
         route: Uri.parse(BotConfig.home_route),
       );
