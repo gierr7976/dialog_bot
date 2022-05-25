@@ -36,22 +36,24 @@ void continueFlow() => test(
         final FlowNavigator navigator = FlowNavigator(
           tg: MockTeleDart(),
           message: mockMessage(from: 1),
-          root: RootPoint(
-            home: 'a',
-            roots: [
-              mockPoint(
-                name: 'a',
-                next: '/a/b',
-                sub: [
-                  mockPoint(
-                    name: 'b',
-                    next: '/c',
-                    shouldStore: true,
-                  ),
-                ],
-              ),
-              mockPoint(name: 'c'),
-            ],
+          router: PointRouter(
+            RootPoint(
+              home: 'a',
+              roots: [
+                mockPoint(
+                  name: 'a',
+                  next: '/a/b',
+                  children: [
+                    mockPoint(
+                      name: 'b',
+                      next: '/c',
+                      shouldStore: true,
+                    ),
+                  ],
+                ),
+                mockPoint(name: 'c'),
+              ],
+            ),
           ),
           scope: InputScope(
             input: CommandInput(
@@ -99,12 +101,14 @@ void command() => test(
         final FlowNavigator navigator = FlowNavigator(
           tg: MockTeleDart(),
           message: message,
-          root: RootPoint(
-            home: 'root',
-            roots: [
-              root,
-              someCommand,
-            ],
+          router: PointRouter(
+            RootPoint(
+              home: 'root',
+              roots: [
+                root,
+                someCommand,
+              ],
+            ),
           ),
           scope: InputScope(
             input: CommandInput(
@@ -125,29 +129,34 @@ void command() => test(
 
 MockFlowPoint mockPoint({
   required String name,
-  List<FlowPoint>? sub,
+  List<FlowPoint> children = const [],
   String? next,
   bool shouldStore = false,
 }) {
   final MockFlowPoint mock = MockFlowPoint();
   when(mock.name).thenReturn(name);
-  when(mock.build()).thenReturn(sub);
+  when(mock.children).thenReturn(children);
   when(mock.handle(any)).thenAnswer((_) => next);
   when(mock.shouldStore).thenReturn(shouldStore);
+  when(mock.applyRoute(argThat(isNotNull))).thenAnswer(
+    (i) => i.positionalArguments[0] + '/' + name,
+  );
 
   return mock;
 }
 
 MockInputPoint mockCommand(String command) {
   final MockCommandInput input = MockCommandInput();
-  when(input.command).thenReturn('someCommand');
+  when(input.command).thenReturn(command);
   when(input.matches(any)).thenReturn(true);
 
   final MockInputPoint mock = MockInputPoint();
   when(mock.name).thenReturn(input.command);
   when(mock.trigger).thenReturn(input);
-  when(mock.build()).thenReturn(null);
+  when(mock.children).thenReturn([]);
   when(mock.handle(any)).thenReturn(null);
+  when(mock.applyRoute(argThat(isNotNull)))
+      .thenAnswer((i) => i.positionalArguments[0] + '/' + command);
 
   return mock;
 }
@@ -191,6 +200,7 @@ void initRepo() => setUp(
             route: Uri.parse(r'/a'),
           ),
         );
+
         GetIt.instance.registerSingletonAsync<VisitorRepository>(
           () async => repository,
         );

@@ -40,7 +40,7 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
 
   final InputScope scope;
 
-  final RootPoint _root;
+  final PointRouter _router;
 
   late final VisitorRepository _repository;
 
@@ -52,9 +52,9 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
   FlowNavigator({
     required this.tg,
     required this.message,
-    required RootPoint root,
     required this.scope,
-  })  : _root = root,
+    required PointRouter router,
+  })  : _router = router,
         super(null);
 
   Future<void> _init() async {
@@ -67,7 +67,7 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
     final Uri from =
         scope.match(visitor.route) ?? scope.global ?? visitor.route;
 
-    final FlowPoint first = _byRoute(from);
+    final FlowPoint first = _router.byRoute(global: from);
 
     emit(
       FlowNavigatorState(
@@ -90,25 +90,20 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
       final String? next = await current.handle(this);
 
       if (next is String) {
-        final bool isGlobal = next[0] == '/';
-        final String currentRouteString = ready.visitor.route.toString();
-
         final Uri nextRoute =
-            Uri.parse(isGlobal ? next : '$currentRouteString/$next');
-        final FlowPoint? nextPoint = _bySegments(nextRoute.pathSegments, _root);
+            _router.routeFrom(raw: next, base: ready.visitor.route);
 
-        if (nextPoint is FlowPoint) {
-          current = nextPoint;
-          emit(
-            ready.copyWith(
-              visitor: ready.visitor.copyWith(route: nextRoute),
-              current: current,
-            ),
-          );
+        final FlowPoint nextPoint = _router.byRoute(global: nextRoute);
 
-          _logTransition(nextRoute);
-        } else
-          throw ArgumentError('Route not exists');
+        current = nextPoint;
+        emit(
+          ready.copyWith(
+            visitor: ready.visitor.copyWith(route: nextRoute),
+            current: current,
+          ),
+        );
+
+        _logTransition(nextRoute);
       } else
         break;
 
@@ -156,31 +151,6 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
 
     slLogger.w('Route and id should not be modified outside of FlowNavigator');
   }
-
-  //<editor-fold desc="Routing">
-
-  FlowPoint _byRoute(Uri route) =>
-      _bySegments(route.pathSegments, _root) ??
-      _bySegments(home.pathSegments, _root)!;
-
-  FlowPoint? _bySegments(List<String> segments, FlowPoint point) {
-    if (segments.length == 1 && point is! RootPoint)
-      return _alignSegment(segments.first, point);
-
-    for (FlowPoint sub in point.build() ?? []) {
-      final List<String> subsegments =
-          point is RootPoint ? segments : segments.sublist(1);
-
-      if (sub.name == subsegments.first) return _bySegments(subsegments, sub);
-    }
-
-    return null;
-  }
-
-  FlowPoint? _alignSegment(String segment, FlowPoint point) =>
-      point.name == segment ? point : null;
-
-//</editor-fold>
 
   //<editor-fold desc="Logging">
 

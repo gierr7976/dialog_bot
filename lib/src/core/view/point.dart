@@ -7,9 +7,12 @@ abstract class FlowPoint {
 
   const FlowPoint();
 
-  List<FlowPoint>? build() => null;
+  List<FlowPoint> get children => [];
 
   FutureOr<String?> handle(FlowNavigator navigator) => null;
+
+  @visibleForTesting
+  String applyRoute(String route) => '$route/$name';
 }
 
 @visibleForTesting
@@ -30,7 +33,7 @@ class RootPoint extends FlowPoint {
   }) : assert(_assertHomeExists(roots, home));
 
   @override
-  List<FlowPoint> build() => roots;
+  List<FlowPoint> get children => roots;
 
   @override
   FutureOr<String?> handle(FlowNavigator navigator) =>

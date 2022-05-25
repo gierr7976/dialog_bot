@@ -2,34 +2,25 @@ part of dialog_bot.core.view;
 
 class FlowBot {
   final String token;
-  final RootPoint _root;
+
+  final PointRouter _router;
 
   FlowBot({
     required this.token,
     required List<FlowPoint> roots,
     String home = BotConfig.home_route,
-  }) : _root = RootPoint(
-          roots: roots,
-          home: home,
+  }) : _router = PointRouter(
+          RootPoint(
+            roots: roots,
+            home: home,
+          ),
         );
 
-  List<BotCommand> get publicCommands {
-    final List<FlowPoint> roots = _root.build();
-    final List<InputPoint> commandInputs = roots
-        .where(
-          (point) => point is InputPoint && point.trigger is CommandInput,
-        )
-        .map((point) => point as InputPoint)
-        .toList();
-
-    if (commandInputs.isNotEmpty)
-      return [
-        for (InputPoint point in commandInputs)
-          (point.trigger as CommandInput).botCommand,
+  List<BotCommand> get publicCommands => [
+        for (InputPoint point in _router.globalInputs)
+          if (point.trigger is CommandInput)
+            (point.trigger as CommandInput).botCommand,
       ];
-
-    return [];
-  }
 
   Future<void> start() async {
     final User user = await Telegram(token).getMe();
@@ -50,10 +41,7 @@ class FlowBot {
 
   @mustCallSuper
   void subscribe(TeleDart tg) {
-    final _InputExtractor extractor = _InputExtractor(_root);
-    final List<InputScope> scopes = extractor.on(tg);
-
-    for (InputScope scope in scopes)
+    for (InputScope scope in _router.inputScopes)
       scope.build(tg).listen(
             (message) => _listener(
               tg: tg,
@@ -71,7 +59,7 @@ class FlowBot {
     final FlowNavigator navigator = FlowNavigator(
       tg: tg,
       message: message,
-      root: _root,
+      router: _router,
       scope: scope,
     );
 
