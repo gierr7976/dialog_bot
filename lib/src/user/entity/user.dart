@@ -6,17 +6,36 @@ class DialogUser extends Visitor {
 
   final List<Position> positions;
 
+  final Invite? invite;
+
   const DialogUser({
     required super.key,
     required super.id,
     required super.route,
     required this.fullName,
-    required this.positions,
+    this.positions = const [],
+    this.invite,
   });
 
   bool isAllowed(Permission permission) => positions.any(
         (position) => position.isAllowed(permission),
       );
+
+  DialogUser? acceptInvite(int id, String code) {
+    final bool correctAndValid =
+        invite?.code == code && (invite?.isValid ?? false);
+
+    if (correctAndValid)
+      return DialogUser(
+        key: key,
+        id: id,
+        route: route,
+        fullName: fullName,
+        positions: positions,
+      );
+
+    return null;
+  }
 
   //<editor-fold desc="Data class methods">
 
@@ -27,6 +46,7 @@ class DialogUser extends Visitor {
     ObjectId? key,
     String? fullName,
     List<Position>? positions,
+    Invite? invite,
   }) =>
       DialogUser(
         id: id ?? this.id,
@@ -34,6 +54,7 @@ class DialogUser extends Visitor {
         key: key ?? this.key,
         fullName: fullName ?? this.fullName,
         positions: positions ?? this.positions,
+        invite: invite ?? this.invite,
       );
 
   //</editor-fold>
