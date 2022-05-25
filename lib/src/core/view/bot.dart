@@ -2,22 +2,18 @@ part of dialog_bot.core.view;
 
 class FlowBot {
   final String token;
-  final List<FlowPoint> roots;
+  final RootPoint _root;
 
   FlowBot({
     required this.token,
-    required this.roots,
-  }) : assert(roots.isNotEmpty);
+    required List<FlowPoint> roots,
+    String home = BotConfig.home_route,
+  }) : _root = RootPoint(
+          roots: roots,
+          home: home,
+        );
 
-  List<BotCommand> get publicCommands => [
-        for (FlowPoint point in roots)
-          for (Input trigger in point.triggers)
-            if (trigger is CommandInput)
-              BotCommand(
-                command: trigger.command,
-                description: trigger.description,
-              ),
-      ];
+  List<BotCommand> get publicCommands => throw UnimplementedError();
 
   Future<void> start() async {
     final User user = await Telegram(token).getMe();
@@ -38,23 +34,15 @@ class FlowBot {
 
   @mustCallSuper
   void subscribe(TeleDart tg) {
-    final List<Input> inputs = [
-      for (FlowPoint point in roots) ...[
-        ...point.triggers,
-        ...(point.build() ?? []).expand((sub) => sub.triggers),
-      ],
-    ];
+    final _InputExtractor extractor = _InputExtractor(_root);
+    final List<InputScope> scopes = extractor.on(tg);
 
-    final List<Input> unique = [];
-
-    for (Input input in inputs) if (!unique.contains(input)) unique.add(input);
-
-    for (Input input in unique)
-      input.build(tg).listen(
+    for (InputScope scope in scopes)
+      scope.build(tg).listen(
             (message) => _listener(
               tg: tg,
               message: message,
-              trigger: input,
+              scope: scope,
             ),
           );
   }
@@ -62,15 +50,15 @@ class FlowBot {
   Future<void> _listener({
     required TeleDart tg,
     required TeleDartMessage message,
-    required Input trigger,
-  }) async {
+    required InputScope scope,
+  }) {
     final FlowNavigator navigator = FlowNavigator(
       tg: tg,
       message: message,
-      trigger: trigger,
-      roots: roots,
+      root: _root,
+      scope: scope,
     );
 
-    await navigator.run();
+    return navigator.run();
   }
 }

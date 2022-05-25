@@ -3,33 +3,34 @@ part of dialog_bot.core.view;
 class FlowNavigatorState {
   final Visitor visitor;
 
-  final List<dynamic> _data;
-
   final FlowPoint _current;
 
-  const FlowNavigatorState._({
+  final List<dynamic> _data;
+
+  const FlowNavigatorState({
     required this.visitor,
-    required List<dynamic> data,
     required FlowPoint current,
-  })  : _data = data,
-        _current = current;
+    List<dynamic> data = const [],
+  })  : _current = current,
+        _data = data;
 
   T? prefer<T>() => _data.firstWhere(
-        (element) => element is T,
+        (stored) => stored is T,
         orElse: () => null,
       );
 
   T require<T>() => prefer()!;
 
-  FlowNavigatorState _copyWith({
+  FlowNavigatorState copyWith({
     Visitor? visitor,
-    List<dynamic>? data,
     FlowPoint? current,
+    String? route,
+    List<dynamic>? data,
   }) =>
-      FlowNavigatorState._(
+      FlowNavigatorState(
         visitor: visitor ?? this.visitor,
-        data: data ?? _data,
         current: current ?? _current,
+        data: data ?? _data,
       );
 }
 
@@ -38,106 +39,92 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
 
   final TeleDartMessage message;
 
-  final Input trigger;
+  final InputScope scope;
 
-  final List<FlowPoint> _roots;
+  final RootPoint _root;
 
   late final VisitorRepository _repository;
 
   FlowNavigatorState get ready => state!;
 
+  Uri get home => Uri.parse(BotConfig.home_route);
+
+  @visibleForTesting
   FlowNavigator({
     required this.tg,
     required this.message,
-    required this.trigger,
-    required List<FlowPoint> roots,
-  })  : assert(roots.isNotEmpty),
-        _roots = roots,
+    required RootPoint root,
+    required this.scope,
+  })  : _root = root,
         super(null);
 
-  Future<void> init() async {
-    assert(state == null);
-
+  Future<void> _init() async {
     _repository = await GetIt.instance.getAsync();
 
-    final int id = message.from!.id;
-    final Visitor visitor = await _repository.fetch(id) ??
-        Visitor.create(
-          id: id,
-          route: Uri.parse(BotConfig.home_route),
-        );
+    final Visitor visitor = await //
+        _repository.fetch(message.from!.id) ??
+        Visitor.create(id: message.from!.id);
 
-    final FlowPoint from = trigger is CommandInput
-        ? _findCommand(trigger as CommandInput)
-        : _FlowExplorer(_roots).find(visitor.route)!;
+    final FlowPoint first = _byRoute(
+      scope.match(visitor.route) ?? scope.global ?? visitor.route,
+    );
 
     emit(
-      FlowNavigatorState._(
+      FlowNavigatorState(
         visitor: visitor,
-        data: [],
-        current: from,
+        current: first,
       ),
     );
   }
 
   Future<void> run() async {
-    await init();
+    await _init();
 
-    FlowPoint next = ready._current;
+    FlowPoint current = ready._current;
 
     while (true) {
-      final String? requested = await next.handle(this);
+      final String? next = await current.handle(this);
 
-      if (requested is String) {
-        if (requested[0] == '/')
-          next = _nextGlobal(requested);
-        else
-          next = _nextLocal(requested);
+      if (next is String) {
+        final Uri nextRoute = Uri.parse(next);
+        final FlowPoint? nextPoint = _bySegments(nextRoute.pathSegments, _root);
+
+        if (nextPoint is FlowPoint) {
+          current = nextPoint;
+          emit(
+            ready.copyWith(
+              visitor: ready.visitor.copyWith(route: nextRoute),
+            ),
+          );
+        } else
+          throw ArgumentError('Route not exists');
       } else
         break;
 
-      if (next.shouldStore) await _repository.store(ready.visitor);
+      if (current.shouldStore) await _repository.store(ready.visitor);
     }
+
+    await close();
   }
 
-  //<editor-fold desc="Next point getters">
+  FlowPoint _byRoute(Uri route) =>
+      _bySegments(route.pathSegments, _root) ??
+      _bySegments(home.pathSegments, _root)!;
 
-  FlowPoint _nextGlobal(String next) {
-    final Uri route = Uri.parse(next);
+  FlowPoint? _bySegments(List<String> segments, FlowPoint point) {
+    if (segments.length == 1 && point is! RootPoint)
+      return _alignSegment(segments.first, point);
 
-    final FlowPoint nextPoint = _FlowExplorer(_roots).find(route)!;
+    for (FlowPoint sub in point.build() ?? []) {
+      final List<String> subsegments =
+          point is RootPoint ? segments : segments.sublist(1);
 
-    emit(
-      ready._copyWith(
-        visitor: ready.visitor.copyWith(route: route),
-        current: nextPoint,
-      ),
-    );
+      if (sub.name == subsegments.first) return _bySegments(subsegments, sub);
+    }
 
-    return nextPoint;
+    return null;
   }
 
-  FlowPoint _nextLocal(String next) {
-    final Uri route = Uri.parse(
-      '/${[...ready.visitor.route.pathSegments, next].join('/')}',
-    );
-    final Uri routeLocal = Uri.parse('/$next');
-
-    final FlowPoint nextPoint =
-        _FlowExplorer(ready._current.build()!).find(routeLocal)!;
-
-    emit(
-      ready._copyWith(
-        visitor: ready.visitor.copyWith(route: route),
-        current: nextPoint,
-      ),
-    );
-
-    return nextPoint;
-  }
-
-  FlowPoint _findCommand(CommandInput trigger) =>
-      _FlowExplorer(_roots)._findInline(trigger.command, _roots)!;
-
-//</editor-fold>
+  FlowPoint? _alignSegment(String segment, FlowPoint point) =>
+      point.name == segment ? point : null;
 }

@@ -11,10 +11,10 @@ class Visitor extends Entity {
     required this.route,
   });
 
-  factory Visitor.create({required int id, required Uri route}) => Visitor(
+  factory Visitor.create({required int id}) => Visitor(
         key: ObjectId(),
         id: id,
-        route: route,
+        route: Uri.parse(BotConfig.home_route),
       );
 
   //<editor-fold desc="Data class methods">
