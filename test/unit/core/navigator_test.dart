@@ -155,6 +155,7 @@ MockInputPoint mockCommand(String command) {
 MockTeleDartMessage mockMessage({String text = '', int from = 0}) {
   final MockUser user = MockUser();
   when(user.id).thenReturn(from);
+  when(user.username).thenReturn('mock');
 
   final MockTeleDartMessage mock = MockTeleDartMessage();
   when(mock.text).thenReturn(text);

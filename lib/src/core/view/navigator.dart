@@ -104,15 +104,13 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
             ),
           );
 
-          if (current.shouldStore) await _repository.store(ready.visitor);
-
           _logTransition(nextRoute);
         } else
           throw ArgumentError('Route not exists');
       } else
         break;
 
-      if (current.shouldStore) await _repository.store(ready.visitor);
+      if (ready._current.shouldStore) await _repository.store(ready.visitor);
     }
 
     _logEnd(ready.visitor.route);
