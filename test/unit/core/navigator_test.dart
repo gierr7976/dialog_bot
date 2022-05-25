@@ -54,7 +54,10 @@ void continueFlow() => test(
             ],
           ),
           scope: InputScope(
-            input: CommandInput('a', ''),
+            input: CommandInput(
+              command: 'a',
+              description: '',
+            ),
             variants: [Uri.parse('/a')],
           ),
         );
@@ -104,7 +107,10 @@ void command() => test(
             ],
           ),
           scope: InputScope(
-            input: CommandInput('someCommand', ''),
+            input: CommandInput(
+              command: 'someCommand',
+              description: '',
+            ),
             variants: [
               Uri.parse('/someCommand'),
             ],
