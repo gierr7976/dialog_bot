@@ -8,7 +8,7 @@ abstract class VisitorRepository {
 
 class MongoVisitorRepository extends MongoRepository
     implements VisitorRepository {
-  static const String collection = 'visitors';
+  String get collection => 'visitors';
 
   MongoVisitorRepository(super.service);
 
