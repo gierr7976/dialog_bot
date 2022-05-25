@@ -8,7 +8,7 @@ class _StartAuthenticated extends FlowPoint with Keyboard {
   final bool shouldStore = true;
 
   @override
-  List<FlowPoint>? build() => [
+  List<FlowPoint> get children => [
         _LetsGoButtonPoint(),
       ];
 

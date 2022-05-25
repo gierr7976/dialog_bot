@@ -11,7 +11,7 @@ class StartCommand extends SecureInputPoint {
       );
 
   @override
-  List<FlowPoint>? build() => [
+  List<FlowPoint> get children => [
         _StartAuthenticated(),
         _StartNonAuthenticated(),
       ];

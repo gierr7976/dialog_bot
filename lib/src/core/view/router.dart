@@ -26,9 +26,13 @@ class PointRouter {
   }
 
   Map<Uri, InputPoint> get _inputMap => Map.fromEntries(
-        _pointMap.entries.where(
-          (entry) => entry.value is InputPoint,
-        ) as List<MapEntry<Uri, InputPoint>>,
+        _pointMap.entries
+            .where(
+              (entry) => entry.value is InputPoint,
+            )
+            .map(
+              (entry) => MapEntry(entry.key, entry.value as InputPoint),
+            ),
       );
 
   List<InputPoint> get globalInputs => _inputMap.entries
