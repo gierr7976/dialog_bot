@@ -18,10 +18,13 @@ class MongoVisitorRepository extends MongoRepository
       {'id': id},
     );
 
-    if (raw is Map<String, dynamic>) return Visitor.fromJson(raw);
+    if (raw is Map<String, dynamic>) return parseRaw(raw);
 
     return null;
   }
+
+  @protected
+  Visitor parseRaw(Map<String, dynamic> raw) => Visitor.fromJson(raw);
 
   @override
   Future<void> store(Visitor visitor) => db.collection(collection).insertOne(

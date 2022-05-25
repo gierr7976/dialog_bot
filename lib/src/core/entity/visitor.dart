@@ -2,13 +2,13 @@ part of dialog_bot.core.entity;
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Visitor extends Entity {
-  final int id;
+  final int? id;
   final Uri route;
 
   const Visitor({
     required super.key,
-    required this.id,
     required this.route,
+    this.id,
   });
 
   factory Visitor.create({required int id}) => Visitor(
