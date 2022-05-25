@@ -27,7 +27,17 @@ class MongoVisitorRepository extends MongoRepository
   Visitor parseRaw(Map<String, dynamic> raw) => Visitor.fromJson(raw);
 
   @override
-  Future<void> store(Visitor visitor) => db.collection(collection).insertOne(
-        visitor.toJson(),
-      );
+  Future<void> store(Visitor visitor) async {
+    final Map<String, dynamic> raw = visitor.toJson();
+
+    final WriteResult updateResult = await db.collection(collection).replaceOne(
+      {'_id': visitor.key},
+      raw,
+    );
+
+    if (updateResult.nMatched < 1)
+      await db.collection(collection).insertOne(
+            visitor.toJson(),
+          );
+  }
 }

@@ -8,7 +8,9 @@ class _InputExtractor {
   Map<Uri, InputPoint> get inputMap => _inputMap;
 
   _InputExtractor(this.root) {
-    _inputMap = _extractOne('', root);
+    _inputMap = {
+      for (FlowPoint point in root.build()) ..._extractOne('', point),
+    };
   }
 
   List<InputScope> on(TeleDart tg) {

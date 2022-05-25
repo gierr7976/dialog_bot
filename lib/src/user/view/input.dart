@@ -23,14 +23,15 @@ class PermittedButtonInput extends ButtonInput {
   final Permission? permission;
 
   PermittedButtonInput({
+    required super.name,
     required super.text,
     this.authorized = true,
     this.permission,
   });
 
-  bool isEnabled(DialogUser? user) => permission is Permission
+  bool isEnabled(DialogUser? user) => authorized
       ? user is DialogUser
-          ? user.isAllowed(permission!)
+          ? user.isAllowed(permission)
           : false
-      : !authorized;
+      : true;
 }

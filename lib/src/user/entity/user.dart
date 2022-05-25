@@ -26,9 +26,11 @@ class DialogUser extends Visitor {
           route: Uri.parse(BotConfig.home_route),
         );
 
-  bool isAllowed(Permission permission) => positions.any(
-        (position) => position.isAllowed(permission),
-      );
+  bool isAllowed(Permission? permission) => permission is Permission
+      ? positions.any(
+          (position) => position.isAllowed(permission),
+        )
+      : true;
 
   DialogUser? acceptInvite(int id, String code) {
     final bool correctAndValid =

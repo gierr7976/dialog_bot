@@ -2,14 +2,19 @@ part of dialog_bot.user.view;
 
 mixin Keyboard on FlowPoint {
   ReplyMarkup getKeyboard(DialogUser? user) {
-    final List<ButtonInput> allButtons = build()
+    final List<InputPoint> allButtonsPoints = build()
             ?.where(
               (element) =>
                   element is InputPoint && element.trigger is ButtonInput,
             )
-            .toList() as List<ButtonInput>? ??
+            .map((point) => point as InputPoint)
+            .toList() ??
         [];
-    ;
+    final List<ButtonInput> allButtons = allButtonsPoints
+        .map(
+          (point) => point.trigger as ButtonInput,
+        )
+        .toList();
 
     if (allButtons.isNotEmpty) {
       final List<ButtonInput> enabled = allButtons

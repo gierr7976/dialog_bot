@@ -18,7 +18,7 @@ class RootPoint extends FlowPoint {
       roots.any((point) => point.name == home);
 
   @override
-  final String name = '';
+  final String name = '/';
 
   final String home;
 

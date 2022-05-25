@@ -90,6 +90,8 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
       final String? next = await current.handle(this);
 
       if (next is String) {
+        assert(next[0] == '/');
+
         final Uri nextRoute = Uri.parse(next);
         final FlowPoint? nextPoint = _bySegments(nextRoute.pathSegments, _root);
 
@@ -101,6 +103,8 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
               current: current,
             ),
           );
+
+          if (current.shouldStore) await _repository.store(ready.visitor);
 
           _logTransition(nextRoute);
         } else

@@ -5,6 +5,9 @@ class _StartAuthenticated extends FlowPoint with Keyboard {
   String get name => 'authenticated';
 
   @override
+  final bool shouldStore = true;
+
+  @override
   List<FlowPoint>? build() => [
         _LetsGoButtonPoint(),
       ];
@@ -54,6 +57,7 @@ class _LetsGoButtonPoint extends SecureInputPoint {
 
   @override
   Input get trigger => PermittedButtonInput(
+        name: name,
         text: button,
       );
 }
