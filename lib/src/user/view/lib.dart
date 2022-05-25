@@ -7,5 +7,5 @@ import 'package:dialog_bot/src/user/entity/lib.dart';
 import 'package:teledart/model.dart';
 
 part 'input.dart';
-part 'navigator.dart';
 part 'keyboard.dart';
+part 'navigator.dart';

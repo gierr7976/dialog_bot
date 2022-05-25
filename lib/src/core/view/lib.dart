@@ -16,6 +16,6 @@ import 'package:teledart/telegram.dart';
 part 'bot.dart';
 part 'extractor.dart';
 part 'input.dart';
+part 'logging.dart';
 part 'navigator.dart';
 part 'point.dart';
-part 'logging.dart';

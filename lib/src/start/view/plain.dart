@@ -53,13 +53,13 @@ class _LetsGoButtonPoint extends SecureInputPoint {
   String get name => 'lets-go';
 
   @override
-  FutureOr<String?> onAuthorized(FlowNavigator navigator) => null;
-
-  @override
   Input get trigger => PermittedButtonInput(
         name: name,
         text: button,
       );
+
+  @override
+  FutureOr<String?> onAuthorized(FlowNavigator navigator) => null;
 }
 
 class _StartNonAuthenticated extends FlowPoint with Keyboard {
