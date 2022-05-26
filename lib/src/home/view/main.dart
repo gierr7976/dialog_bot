@@ -10,6 +10,26 @@ class HomePoint extends FlowPoint with Keyboard {
   @override
   List<FlowPoint> get children => [
         HomeHelpPoint(),
+        TodoButton(
+          name: 'classes',
+          text: '${Emoji.pin} Репетиции',
+          next: '/home',
+        ),
+        TodoButton(
+          name: 'scenarios',
+          text: '${Emoji.book} Постановки',
+          next: '/home',
+        ),
+        TodoButton(
+          name: 'collective',
+          text: '${Emoji.kasper} Коллектив',
+          next: '/home',
+        ),
+        TodoButton(
+          name: 'notify',
+          text: '${Emoji.fire} Оповестить',
+          next: '/home',
+        ),
       ];
 
   @override
