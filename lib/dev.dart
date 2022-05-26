@@ -1,3 +1,4 @@
+import 'package:dialog_bot/src/collective/view/lib.dart';
 import 'package:dialog_bot/src/core/view/lib.dart';
 import 'package:dialog_bot/src/dependencies.dart';
 import 'package:dialog_bot/src/gen/config.dart';
@@ -17,6 +18,7 @@ void main() async {
         ],
       ),
       HomePoint(),
+      CollectivePoint(),
     ],
   );
 
