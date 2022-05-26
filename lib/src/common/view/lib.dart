@@ -8,3 +8,4 @@ import 'package:dialog_bot/src/user/view/lib.dart';
 part 'delayer.dart';
 part 'emoji.dart';
 part 'redirect_button.dart';
+part 'todo.dart';
