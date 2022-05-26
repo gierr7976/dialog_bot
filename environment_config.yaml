@@ -10,9 +10,12 @@ environment_config:
       default: mongodb://localhost/dialog_bot
 
     home_route:
-      default: start
+      default: /start
 
     invite_lifetime:
       default: 14
       type: Duration
       pattern: 'Duration(days: __VALUE__)'
+
+    bot_link:
+      default: https://t.me/novy_dialog_dev_bot
