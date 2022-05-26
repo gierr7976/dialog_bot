@@ -1,52 +1,43 @@
 part of dialog_bot.start.view;
 
-class WelcomePoint extends FlowPoint {
-  final FlowPoint next;
-
-  WelcomePoint({
-    required this.next,
-  });
+class _StartAuthenticated extends FlowPoint with Keyboard {
+  @override
+  String get name => 'authenticated';
 
   @override
-  String get name => 'welcome';
+  final bool shouldStore = true;
 
   @override
-  FutureOr<void> pass() async {
-    final String username = message.from?.first_name ?? 'незнакомец';
-
-    await message.reply(
-      'Привет, $username!',
-      reply_markup: ReplyKeyboardRemove(
-        remove_keyboard: true,
-        selective: false,
-      ),
-    );
-
-    await navigator.next(next);
-  }
-}
-
-class AuthenticatedPoint extends FlowPoint with Stored {
-  @override
-  String get name => 'auth/yes';
+  List<FlowPoint> get children => [
+        RedirectButton(
+          name: name,
+          text: 'Поехали ${Emoji.rocket}',
+          next: 'should-help',
+          children: [
+            _ShouldIHelp(),
+          ],
+        ),
+      ];
 
   @override
-  FutureOr<void> pass() async {
+  FutureOr<String?> handle(FlowNavigator navigator) async {
     final Delayer delayer = Delayer(
       delayed: [
-        () => message.reply(Emoji.victory),
-        () => message.reply(
+        () => navigator.message.reply(Emoji.victory),
+        () => navigator.message.reply(
               _goodToSee,
               parse_mode: 'MarkdownV2',
             ),
-        () => message.reply(
+        () => navigator.message.reply(
               _letsStart,
-              reply_markup: _letsStartMarkup,
+              reply_markup: getKeyboard(navigator.user),
             ),
       ],
     );
 
-    await delayer.start();
+    await delayer.run();
+
+    return null;
   }
 
   static const String _goodToSee = //
@@ -60,40 +51,51 @@ class AuthenticatedPoint extends FlowPoint with Stored {
       'твоему актёрскому таланту ${Emoji.winky}';
 
   static const String _letsStart = 'Ну что, начнём?';
-
-  final ReplyMarkup _letsStartMarkup = ReplyKeyboardMarkup(
-    keyboard: [
-      [
-        KeyboardButton(
-          text: LetsGoListener.message,
-        ),
-      ],
-    ],
-    resize_keyboard: true,
-    one_time_keyboard: true,
-  );
 }
 
-class UnauthenticatedPoint extends FlowPoint {
+class _ShouldIHelp extends FlowPoint with Keyboard {
   @override
-  String get name => 'auth/no';
+  final String name = 'should-help';
 
   @override
-  FutureOr<void> pass() async {
-    await message.reply(Emoji.stop);
+  List<FlowPoint> get children => [
+        RedirectButton(name: 'yes', text: 'Да', next: '/home/help'),
+        RedirectButton(name: 'no', text: 'Нет', next: '/home'),
+      ];
 
-    await message.reply(
+  @override
+  final bool shouldStore = true;
+
+  @override
+  FutureOr<String?> handle(FlowNavigator navigator) async {
+    await navigator.message.reply(
       _reply,
-      reply_markup: ReplyKeyboardRemove(
-        remove_keyboard: true,
-        selective: false,
-      ),
+      reply_markup: getKeyboard(navigator.user),
     );
 
-    navigator.finish();
+    return null;
   }
 
-  String get _reply => //
+  static const _reply = 'Рассказать о твоём профиле?';
+}
+
+class _StartNonAuthenticated extends FlowPoint with Keyboard {
+  @override
+  String get name => 'non-authenticated';
+
+  @override
+  FutureOr<String?> handle(FlowNavigator navigator) async {
+    await navigator.message.reply(Emoji.stop);
+
+    await navigator.message.reply(
+      _reply,
+      reply_markup: getKeyboard(null),
+    );
+
+    return null;
+  }
+
+  static const String _reply = //
       'Стоп!\n'
       '\n'
       'Прежде чем пользоваться ботом, тебе нужно зарегистрироваться.\n'

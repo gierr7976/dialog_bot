@@ -7,6 +7,7 @@ pubspec.lock
 build/
 lib/src/dependencies.config.dart
 *.g.dart
+*.mocks.dart
 
 # IDE configuration
 .idea/

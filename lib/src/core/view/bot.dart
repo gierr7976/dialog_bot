@@ -2,14 +2,25 @@ part of dialog_bot.core.view;
 
 class FlowBot {
   final String token;
-  final List<MessageListener> listeners;
-  final List<BotCommand> publicCommands;
+
+  final PointRouter _router;
 
   FlowBot({
     required this.token,
-    required this.listeners,
-    this.publicCommands = const [],
-  });
+    required List<FlowPoint> roots,
+    String home = BotConfig.home_route,
+  }) : _router = PointRouter(
+          RootPoint(
+            roots: roots,
+            home: home,
+          ),
+        );
+
+  List<BotCommand> get publicCommands => [
+        for (InputPoint point in _router.globalInputs)
+          if (point.trigger is CommandInput)
+            (point.trigger as CommandInput).botCommand,
+      ];
 
   Future<void> start() async {
     final User user = await Telegram(token).getMe();
@@ -30,10 +41,28 @@ class FlowBot {
 
   @mustCallSuper
   void subscribe(TeleDart tg) {
-    for (MessageListener listener in listeners)
-      for (Stream<TeleDartMessage> stream in listener.on(tg))
-        stream.listen(
-          (message) => listener._handle(tg, message),
-        );
+    for (InputScope scope in _router.inputScopes)
+      scope.build(tg).listen(
+            (message) => _listener(
+              tg: tg,
+              message: message,
+              scope: scope,
+            ),
+          );
+  }
+
+  Future<void> _listener({
+    required TeleDart tg,
+    required TeleDartMessage message,
+    required InputScope scope,
+  }) {
+    final FlowNavigator navigator = FlowNavigator(
+      tg: tg,
+      message: message,
+      router: _router,
+      scope: scope,
+    );
+
+    return navigator.run();
   }
 }
