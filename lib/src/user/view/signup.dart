@@ -2,7 +2,7 @@ part of dialog_bot.user.view;
 
 class SignupPoint extends FlowPoint {
   static const String group = 'signup';
-  static final String dataPattern = r'\w{8,}';
+  static final String dataPattern = r'\w{8}';
 
   static DeeplinkForwarder get deeplink => DeeplinkForwarder(
         group: group,

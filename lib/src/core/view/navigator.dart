@@ -87,6 +87,8 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
     FlowPoint current = ready._current;
 
     while (true) {
+      if (current.shouldStore) await _repository.store(ready.visitor);
+
       final String? next = await current.handle(this);
 
       if (next is String) {
@@ -106,8 +108,6 @@ class FlowNavigator extends Cubit<FlowNavigatorState?> {
         _logTransition(nextRoute);
       } else
         break;
-
-      if (ready._current.shouldStore) await _repository.store(ready.visitor);
     }
 
     _logEnd(ready.visitor.route);

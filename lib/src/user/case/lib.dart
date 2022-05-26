@@ -1,5 +1,6 @@
 library dialog_bot.user.usecase;
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';

@@ -30,8 +30,15 @@ class Inviter {
       for (int i = 0; i < 8; i++) random.nextInt(1 << 32),
     ];
 
-    final int numCode = sha256.convert(bytes).bytes.reduce(
-          (value, element) => value ^ element,
+    final String source = bytes.join();
+
+    final int numCode = sha256
+        .convert(
+          utf8.encode(source),
+        )
+        .bytes
+        .reduce(
+          (value, element) => (value * element).abs(),
         );
 
     return numCode.toRadixString(16).substring(0, 8);

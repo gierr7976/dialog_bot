@@ -17,8 +17,6 @@ abstract class FlowPoint {
 
 @visibleForTesting
 class RootPoint extends FlowPoint {
-  static bool _assertHomeExists(List<FlowPoint> roots, String home) =>
-      roots.any((point) => point.name == home);
 
   @override
   final String name = '/';
@@ -30,7 +28,7 @@ class RootPoint extends FlowPoint {
   RootPoint({
     required this.roots,
     this.home = BotConfig.home_route,
-  }) : assert(_assertHomeExists(roots, home));
+  });
 
   @override
   List<FlowPoint> get children => roots;

@@ -20,10 +20,10 @@ class HomePoint extends FlowPoint with Keyboard {
           text: '${Emoji.book} Постановки',
           next: '/home',
         ),
-        TodoButton(
+        RedirectButton(
           name: 'collective',
           text: '${Emoji.kasper} Коллектив',
-          next: '/home',
+          next: '/collective',
         ),
         TodoButton(
           name: 'notify',
