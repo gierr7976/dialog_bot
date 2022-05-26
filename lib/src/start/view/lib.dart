@@ -8,3 +8,4 @@ import 'package:dialog_bot/src/user/view/lib.dart';
 
 part 'input.dart';
 part 'plain.dart';
+part 'deeplink.dart';

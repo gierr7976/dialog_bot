@@ -37,7 +37,7 @@ class Inviter {
     return numCode.toRadixString(16).substring(0, 8);
   }
 
-  Future<bool> signup(int id, String code) async {
+  Future<DialogUser?> signup(int id, String code) async {
     final DialogUser? invited = await _repository.fetchByCode(code);
 
     if (invited is DialogUser) {
@@ -45,12 +45,12 @@ class Inviter {
 
       if (signedUp is DialogUser) {
         await _repository.store(signedUp);
-        return true;
+        return signedUp;
       }
 
       await _repository.deleteByCode(code);
     }
 
-    return false;
+    return null;
   }
 }

@@ -10,7 +10,7 @@ class _StartAuthenticated extends FlowPoint with Keyboard {
   @override
   List<FlowPoint> get children => [
         RedirectButton(
-          name: name,
+          name: 'lets-go',
           text: 'Поехали ${Emoji.rocket}',
           next: 'should-help',
           children: [
